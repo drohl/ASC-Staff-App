@@ -16,8 +16,12 @@
       <% end %>
       <% if stay.user == current_user %>
         <div class="panel-footer">
-          <%= link_to 'Edit', edit_stay_path(stay) %>
-          <%= link_to 'Destroy', stay, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <%= link_to edit_stay_path(stay) do %>
+            <span class="glyphicon glyphicon-edit"></span> Edit Note<% end %>             
+          &nbsp;
+          <%= link_to stay, method: :delete, data: { confirm: 'Are you sure?' } do %>
+            <span class="glyphicon glyphicon-home"></span> Leave
+          <% end %>             
         </div>
       <% end %>
     </div>

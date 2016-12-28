@@ -21,7 +21,7 @@ class StaysController < ApplicationController
     @stay = current_user.stays.build(stay_params)#Stay.new(stay_params)
 
       if @stay.save
-        redirect_to @stay, notice: 'Stay was successfully created.'
+        redirect_to stays_url, notice: 'Stay was successfully created.'
       else
         render :new
       end
@@ -29,7 +29,7 @@ class StaysController < ApplicationController
 
   def update
       if @stay.update(stay_params)
-        redirect_to @stay, notice: 'Stay was successfully updated.'
+        redirect_to stays_url, notice: 'Stay was successfully updated.'
       else
         render :edit
       end

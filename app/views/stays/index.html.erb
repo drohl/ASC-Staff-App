@@ -11,13 +11,12 @@
       <% if stay.note != "" %>
         <div class="panel-body">
           <%= stay.note %>
-          <!--<%= link_to 'Show', stay %>-->
         </div>
       <% end %>
       <% if stay.user == current_user %>
         <div class="panel-footer">
           <%= link_to edit_stay_path(stay) do %>
-            <span class="glyphicon glyphicon-edit"></span> Edit Note<% end %>             
+            <span class="glyphicon glyphicon-edit"></span> Edit Note<% end %>
           &nbsp;
           <%= link_to stay, method: :delete, data: { confirm: 'Are you sure?' } do %>
             <span class="glyphicon glyphicon-home"></span> Leave

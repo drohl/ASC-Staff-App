@@ -1,27 +1,25 @@
-<p id="notice"><%= notice %></p>
-
+<% if user_signed_in? %>
+  <%= link_to "I'm staying late", new_stay_path, class: "btn btn-primary btn-lg"  %>
+<% end %>
 <h1>Stays</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Note</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @stays.each do |stay| %>
-      <tr>
-        <td><%= stay.note %></td>
-        <td><%= link_to 'Show', stay %></td>
-        <td><%= link_to 'Edit', edit_stay_path(stay) %></td>
-        <td><%= link_to 'Destroy', stay, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Stay', new_stay_path %>
+<div id="stays" class="transitions-enabled">
+  <% @stays.each do |stay| %>
+    <div class="box panel panel-default" >
+      <div class="panel-heading">
+        <%= stay.user.email if stay.user %>
+      </div>
+      <% if stay.note != "" %>
+        <div class="panel-body">
+          <%= stay.note %>
+          <!--<%= link_to 'Show', stay %>-->
+        </div>
+      <% end %>
+      <% if stay.user == current_user %>
+        <div class="panel-footer">
+          <%= link_to 'Edit', edit_stay_path(stay) %>
+          <%= link_to 'Destroy', stay, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -1,73 +1,55 @@
 class StaysController < ApplicationController
   before_action :set_stay, only: [:show, :edit, :update, :destroy]
+  before_action :correct_user, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
 
-  # GET /stays
-  # GET /stays.json
   def index
     @stays = Stay.all
   end
 
-  # GET /stays/1
-  # GET /stays/1.json
   def show
   end
 
-  # GET /stays/new
   def new
-    @stay = Stay.new
+    @stay = current_user.stays.build #Stay.new
   end
 
-  # GET /stays/1/edit
   def edit
   end
 
-  # POST /stays
-  # POST /stays.json
   def create
-    @stay = Stay.new(stay_params)
+    @stay = current_user.stays.build(stay_params)#Stay.new(stay_params)
 
-    respond_to do |format|
       if @stay.save
-        format.html { redirect_to @stay, notice: 'Stay was successfully created.' }
-        format.json { render :show, status: :created, location: @stay }
+        redirect_to @stay, notice: 'Stay was successfully created.'
       else
-        format.html { render :new }
-        format.json { render json: @stay.errors, status: :unprocessable_entity }
+        render :new
       end
-    end
   end
 
-  # PATCH/PUT /stays/1
-  # PATCH/PUT /stays/1.json
   def update
-    respond_to do |format|
       if @stay.update(stay_params)
-        format.html { redirect_to @stay, notice: 'Stay was successfully updated.' }
-        format.json { render :show, status: :ok, location: @stay }
+        redirect_to @stay, notice: 'Stay was successfully updated.'
       else
-        format.html { render :edit }
-        format.json { render json: @stay.errors, status: :unprocessable_entity }
+        render :edit
       end
-    end
   end
 
-  # DELETE /stays/1
-  # DELETE /stays/1.json
   def destroy
     @stay.destroy
-    respond_to do |format|
-      format.html { redirect_to stays_url, notice: 'Stay was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+      redirect_to stays_url, notice: 'Stay was successfully destroyed.'
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_stay
       @stay = Stay.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    def correct_user
+      @stay = current_user.stays.find_by(id: params[:id])
+      redirect_to stays_path, notice: "Not authorized to edit this stay." if @stay.nil?
+    end
+
     def stay_params
       params.require(:stay).permit(:note)
     end

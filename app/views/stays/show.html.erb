@@ -1,9 +1,8 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Note:</strong>
   <%= @stay.note %>
 </p>
-
-<%= link_to 'Edit', edit_stay_path(@stay) %> |
+<% if @stay.user == current_user %>
+	<%= link_to 'Edit', edit_stay_path(@stay) %> |
+<% end %>
 <%= link_to 'Back', stays_path %>

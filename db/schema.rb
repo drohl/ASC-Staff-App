@@ -10,12 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161228131320) do
+ActiveRecord::Schema.define(version: 20161228134039) do
 
   create_table "stays", force: :cascade do |t|
     t.string   "note"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "stay_id"
+    t.integer  "user_id"
+    t.index ["stay_id"], name: "index_stays_on_stay_id"
+    t.index ["user_id"], name: "index_stays_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

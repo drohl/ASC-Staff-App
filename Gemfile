@@ -12,10 +12,11 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'jquery-rails'
-gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'bootstrap-sass'
 gem 'devise'
+gem 'paranoia', '~> 2.2'
+gem 'masonry-rails', '~> 0.2.4'
 
 group :development, :test do
   gem 'byebug', platform: :mri

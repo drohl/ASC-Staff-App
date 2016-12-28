@@ -16,7 +16,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootstrap-sass'
 gem 'devise'
 gem 'paranoia', '~> 2.2'
-gem 'masonry-rails', '~> 0.2.4'
+gem 'masonry-rails', '~>0.2.0'
 
 group :development, :test do
   gem 'byebug', platform: :mri

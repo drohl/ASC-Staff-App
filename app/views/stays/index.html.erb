@@ -1,7 +1,4 @@
-<% if user_signed_in? %>
-  <%= link_to "I'm staying late", new_stay_path, class: "btn btn-primary btn-lg"  %>
-<% end %>
-<h1>Stays</h1>
+<h1>Staying late tonight</h1>
 <div id="stays" class="transitions-enabled">
   <% @stays.each do |stay| %>
     <div class="box panel panel-default" >

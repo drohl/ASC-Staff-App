@@ -6,7 +6,7 @@
   <% @stays.each do |stay| %>
     <div class="box panel panel-default" >
       <div class="panel-heading">
-        <%= stay.user.email if stay.user %>
+        <%= stay.user.name %>
       </div>
       <% if stay.note != "" %>
         <div class="panel-body">

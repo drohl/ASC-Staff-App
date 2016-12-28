@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Muli');
+$body-bg: #ecf0f1;
+$font-family-sans-serif: 'Muli', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$navbar-height: 45px;
+$navbar-default-bg: white;
+$navbar-default-brand-color: #c0392b;
+$jumbotron-bg: white; 
+$brand-primary: #81be41;
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+.center {text-align: center; }
+.navbar-brand {font-weight: bold; }

@@ -9,6 +9,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			<!--<a class="navbar-brand" href="#">ASC Staff</a>-->
+			<%= link_to image_tag("asclogo.png", class: "navbar-brand"), root_path %>
 			<%= link_to "ASC Staff", root_path, class: "navbar-brand"%>
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -19,9 +20,22 @@
 						<span class="glyphicon glyphicon-user"></span> Staying Late
 						<% end %>
 					</li>
-					<li><%= link_to "About", about_path %></li>
-					<li><%= link_to "Account", edit_user_registration_path %></li>
-					<li><%= link_to "Log out", destroy_user_session_path, method: :delete %></li>
+					<li class="dropdown">
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Planetarium <span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+							<li><%= link_to "Ticket Sales", ticketsales_path %></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#">Separated link</a></li>
+	          </ul>
+        	</li>
+					<li><%= link_to edit_user_registration_path do %>
+						<span class="glyphicon glyphicon-cog"></span>
+						<% end %>
+					</li>
+					<li><%= link_to destroy_user_session_path, method: :delete do %>
+						<span class="glyphicon glyphicon-log-out"></span>
+						<% end %>
+					</li>
 				<% else %>
 					<li><%= link_to "Log in", new_user_session_path %></li>
 				<% end %>

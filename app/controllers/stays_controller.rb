@@ -21,7 +21,7 @@ class StaysController < ApplicationController
     @stay = current_user.stays.build(stay_params)#Stay.new(stay_params)
 
       if @stay.save
-        redirect_to stays_url, notice: 'Stay was successfully created.'
+        redirect_to stays_url, notice: "You're on the list."
       else
         render :new
       end
@@ -29,7 +29,7 @@ class StaysController < ApplicationController
 
   def update
       if @stay.update(stay_params)
-        redirect_to stays_url, notice: 'Stay was successfully updated.'
+        redirect_to stays_url, notice: 'Note updated. Thanks!'
       else
         render :edit
       end
@@ -37,7 +37,7 @@ class StaysController < ApplicationController
 
   def destroy
     @stay.destroy
-      redirect_to stays_url, notice: 'Stay was successfully destroyed.'
+      redirect_to stays_url, notice: "Your name is off the list. Thanks!"
   end
 
   private
@@ -47,7 +47,7 @@ class StaysController < ApplicationController
 
     def correct_user
       @stay = current_user.stays.find_by(id: params[:id])
-      redirect_to stays_path, notice: "Not authorized to edit this stay." if @stay.nil?
+      redirect_to stays_path, notice: "You're not allowed to edit this." if @stay.nil?
     end
 
     def stay_params

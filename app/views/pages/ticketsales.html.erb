@@ -1,0 +1,53 @@
+<h1>Ticket Sales <small>December 27, 2016</small></h1>
+<div class="list-group">
+  <div class="list-group-item">
+    11:30 Great White Shark
+    <div class="progress">
+    	<% sold = 98 %>
+    	<% fraction = (sold / 166.to_f * 100) %>
+      <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=sold%> " aria-valuemin="0" aria-valuemax="166" style="min-width: 1em; width: <%= fraction.round(1) %>% ;">
+        <%= sold %>
+      </div>
+    </div>
+  </div>
+  <div class="list-group-item">
+    12:30 Polaris
+    <div class="progress">
+      <% sold = 145 %>
+      <% fraction = (sold / 166.to_f * 100) %>
+      <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=sold%> " aria-valuemin="0" aria-valuemax="166" style="width: <%= fraction.round(1) %>% ;">
+        <%= sold %>
+      </div>
+    </div>
+  </div>
+  <div class="list-group-item">
+    1:30 Skies Over Nashville
+    <div class="progress">
+      <% sold = 61 %>
+      <% fraction = (sold / 166.to_f * 100) %>
+      <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=sold%> " aria-valuemin="0" aria-valuemax="166" style="width: <%= fraction.round(1) %>% ;">
+        <%= sold %>
+      </div>
+    </div>
+  </div>
+  <div class="list-group-item">
+    2:30 Polaris
+    <div class="progress">
+      <% sold = 132 %>
+      <% fraction = (sold / 166.to_f * 100) %>
+      <div class="progress-bar" role="progressbar" aria-valuenow=" <%=sold%> " aria-valuemin="0" aria-valuemax="166" style="width: <%= fraction.round(1) %>% ;">
+        <%= sold %>
+      </div>
+    </div>
+  </div>
+  <div class="list-group-item">
+    3:30 Habitat Earth
+    <div class="progress">
+      <% sold = 105 %>
+      <% fraction = (sold / 166.to_f * 100) %>
+      <div class="progress-bar" role="progressbar" aria-valuenow=" <%=sold%> " aria-valuemin="0" aria-valuemax="166" style="width: <%= fraction.round(1) %>% ;">
+        <%= sold %>
+      </div>
+    </div>
+  </div>
+</div>

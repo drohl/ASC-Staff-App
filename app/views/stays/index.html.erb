@@ -3,7 +3,7 @@
   <% @stays.each do |stay| %>
     <div class="box panel panel-default" >
       <div class="panel-heading">
-        <%= stay.user.name %>
+        <h2 class="panel-title"><%= stay.user.name %></h2>
       </div>
       <% if stay.note != "" %>
         <div class="panel-body">

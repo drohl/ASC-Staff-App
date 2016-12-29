@@ -1,10 +1,47 @@
+<% unless user_signed_in? %>
 <div class="jumbotron center">
-	<h1>ASC Staff Resources</h1>
+<%= link_to image_tag("asclogo.png" ), root_path %>
+<% else %>
+<div class="jumbotron center">
+<%end%>
+  <h1>Staff Resources</h1>
 	<% if user_signed_in? %>
-		<%= link_to "I'm Staying Late", new_stay_path, class: "btn btn-primary btn-lg" %>
+    <div class="well">
+      <% count = Stay.count %>
+		  <%= link_to new_stay_path, class: "btn btn-primary btn-lg" do %>
+        I'm staying late
+        <span class="badge"><%= count %></span>
+      <% end %>
+      <%= link_to "ASC website", "http://adventuresci.org", class: "btn btn-default btn-lg" %>
+      <%= link_to "Altru", "http://tiny.cc/altru", class: "btn btn-default btn-lg" %>
+      <%= link_to "Slack", "http://adventuresci.slack.com", class: "btn btn-default btn-lg" %>
+    </div>
+
+    <div class="btn-group-vertical" role="group" aria-label="...">
+      <%= link_to new_stay_path, class: "btn btn-primary" do %>
+        I'm staying late
+        <span class="badge"><%= count %></span>
+      <% end %>
+      <%= link_to "ASC website", "http://adventuresci.org", class: "btn btn-default" %>
+      <%= link_to "Altru", "http://tiny.cc/altru", class: "btn btn-default" %>
+      <%= link_to "Slack", "http://adventuresci.slack.com", class: "btn btn-default" %>
+    </div>
+    <br/>
 	<% else %>
 		<p>
 			<%= link_to "Log in", new_user_session_path, class: "btn btn-primary btn-lg" %>
-			<%= link_to "Sign up", new_user_registration_path, class: "btn btn-default btn-lg" %>	
-		</p>   <% end %>   
+			<%= link_to "Sign up", new_user_registration_path, class: "btn btn-default btn-lg" %>
+		</p>
+  <% end %>
 </div>
+  <% if user_signed_in? %>
+    <div class="list-group">
+      <%= link_to new_stay_path, class: "list-group-item active" do %>
+        I'm staying late
+        <span class="badge"><%= count %></span>
+      <% end %>
+      <%= link_to "ASC website", "http://adventuresci.org", class: "list-group-item" %>
+      <%= link_to "Altru", "http://tiny.cc/altru", class: "list-group-item" %>
+      <%= link_to "Slack", "http://adventuresci.slack.com", class: "list-group-item" %>
+    </div>
+  <% end %>

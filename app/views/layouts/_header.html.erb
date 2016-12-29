@@ -10,20 +10,24 @@
 			</button>
 			<!--<a class="navbar-brand" href="#">ASC Staff</a>-->
 			<%= link_to image_tag("asclogo.png", class: "navbar-brand"), root_path %>
-			<%= link_to "ASC Staff", root_path, class: "navbar-brand"%>
+			<%= link_to "ASC staff", root_path, class: "navbar-brand"%>
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse navbar-ex1-collapse">
 			<ul class="nav navbar-nav navbar-right">
 				<% if user_signed_in? %>
-					<li><%= link_to new_stay_path do %>
-						<span class="glyphicon glyphicon-user"></span> Staying Late
+					<li>
+						<%= link_to new_stay_path do %>
+							Staying late
+							<% if Stay.count > 0 %>
+								<span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
+							<% end %>
 						<% end %>
 					</li>
 					<li class="dropdown">
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Planetarium <span class="caret"></span></a>
 	          <ul class="dropdown-menu">
-							<li><%= link_to "Ticket Sales", ticketsales_path %></li>
+							<li><%= link_to "Ticket sales", ticketsales_path %></li>
 	            <li role="separator" class="divider"></li>
 	            <li><a href="#">Separated link</a></li>
 	          </ul>

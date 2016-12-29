@@ -1,34 +1,36 @@
 <% unless user_signed_in? %>
-<div class="jumbotron center">
-<%= link_to image_tag("asclogo.png" ), root_path %>
+  <div class="jumbotron center">
+  <%= link_to image_tag("asclogo.png" ), root_path %>
 <% else %>
-<div class="jumbotron center">
+  <div>
 <%end%>
   <h1>Staff Resources</h1>
 	<% if user_signed_in? %>
-  <div class="form-group">
-      <% count = Stay.count %>
-        <%= link_to new_stay_path, class: "btn btn-primary btn-lg" do %>
-          I'm staying late
-          <span class="badge"><%= count %></span>
-        <% end %>
-        </div>
-    <div class="well">
-      <%= link_to "ASC website", "http://adventuresci.org", class: "btn btn-default btn-lg" %>
-      <%= link_to "Altru", "http://tiny.cc/altru", class: "btn btn-default btn-lg" %>
-      <%= link_to "Slack", "http://adventuresci.slack.com", class: "btn btn-default btn-lg" %>
+    <div class="row">
+    <div class="col-sm-4">
+      <h3>Everyday</h3>
+      <div class="btn-group" role="group" aria-label="...">
+        <%= link_to "Website", "http://adventuresci.org", class: "btn btn-default" %>
+        <%= link_to "Altru", "http://tiny.cc/altru", class: "btn btn-default" %>
+        <%= link_to "Slack", "http://adventuresci.slack.com", class: "btn btn-default" %>
       </div>
-
-    <!--<div class="btn-group-vertical" role="group" aria-label="...">
-      <%= link_to new_stay_path, class: "btn btn-primary" do %>
-        I'm staying late
-        <span class="badge"><%= count %></span>
-      <% end %>
-      <%= link_to "ASC website", "http://adventuresci.org", class: "btn btn-default" %>
-      <%= link_to "Altru", "http://tiny.cc/altru", class: "btn btn-default" %>
-      <%= link_to "Slack", "http://adventuresci.slack.com", class: "btn btn-default" %>
     </div>
-    <br/>-->
+    <div class="col-sm-4">
+      <h3>After hours</h3>
+      <%= link_to new_stay_path, class: "btn btn-primary" do %>
+        Staying late
+        <% if Stay.count > 0 %>
+          <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
+        <% end %>
+      <% end %>
+    </div>
+    <div class="col-sm-4">
+      <h3>Time sheets</h3>
+      <div class="btn-group" role="group" aria-label="...">
+        <%= link_to "Employee", "https://adventuresci.attendanceondemand.com/ess/", class: "btn btn-default" %>
+        <%= link_to "Supervisor", "https://adventuresci.attendanceondemand.com/operator/", class: "btn btn-default" %>
+      </div>
+    </div>
 	<% else %>
 		<p>
 			<%= link_to "Log in", new_user_session_path, class: "btn btn-primary btn-lg" %>
@@ -36,14 +38,3 @@
 		</p>
   <% end %>
 </div>
-  <% if user_signed_in? %>
-    <!--<div class="list-group">
-      <%= link_to new_stay_path, class: "list-group-item active" do %>
-        I'm staying late
-        <span class="badge"><%= count %></span>
-      <% end %>
-      <%= link_to "ASC website", "http://adventuresci.org", class: "list-group-item" %>
-      <%= link_to "Altru", "http://tiny.cc/altru", class: "list-group-item" %>
-      <%= link_to "Slack", "http://adventuresci.slack.com", class: "list-group-item" %>
-    </div>-->
-  <% end %>

@@ -3,4 +3,6 @@ class PagesController < ApplicationController
   end
   def ticketsales
   end
+  def allplanetarium
+  end
 end

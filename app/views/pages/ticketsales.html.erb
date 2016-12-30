@@ -7,7 +7,9 @@
 <%xml = Nokogiri::XML(file)%>
 <% date = DateTime.strptime(xml.at('StateDate').text,"%Y-%m-%dT%H:%M:%S")%>
 
-<h1>Ticket Sales <small><%= date.strftime("%A, %B %-d")%></small></h1>
+<div class="visible-xs"><h1>Ticket Sales<br/><small><%= date.strftime("%A, %B %-d")%></small></h1></div>
+<div class="hidden-xs"><h1>Ticket Sales <small><%= date.strftime("%A, %B %-d")%></small></h1></div>
+
 <div class="list-group">
   <%xml.css('entry').each do |node|%>
     <div class="list-group-item">

@@ -22,6 +22,7 @@
         <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=sold%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="min-width: 1em; width: <%= fraction.round(1) %>% ;">
           <%= sold %>
         </div>
+        <%= refunded if refunded != 0 %>
       </div>
     </div>
   <%end%>

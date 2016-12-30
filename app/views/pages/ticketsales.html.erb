@@ -19,10 +19,16 @@
         <% sold -= refunded %>
         <% capacity = node.at('SalesOrderItemSalesOrderItemTicketProgramEventsCapacity').text%>
         <% fraction = (sold / capacity.to_f * 100) %>
+        <% refraction = (refunded / capacity.to_f * 100) %>
         <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=sold%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="min-width: 1em; width: <%= fraction.round(1) %>% ;">
           <%= sold %>
         </div>
-        <%= refunded if refunded != 0 %>
+        <% if refunded != 0 %>
+            <div class="progress-bar progress-bar-danger" style="min-width: 1em; width: <%= refraction.round(1) %>%">
+              <span class="sr-only"><%= refunded%> tickets refunded</span>
+              <%=refunded%>
+            </div>
+        <%end%>
       </div>
     </div>
   <%end%>

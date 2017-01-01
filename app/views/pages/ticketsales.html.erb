@@ -1,14 +1,19 @@
 <%require 'open-uri' #Wrapper to open web-based data with open() function %>
 <%require 'nokogiri' #Library to parse the XML file we'll open%>
 
-<%file = open('http://signs.adventuresci.org/data/todaysold.xml').read%>
-<%file.gsub! '<d:', '<'%>
-<%file.gsub! '<m:', '<'%>
-<%xml = Nokogiri::XML(file)%>
-<% date = DateTime.strptime(xml.at('StateDate').text,"%Y-%m-%dT%H:%M:%S")%>
+<% file = open('http://signs.adventuresci.org/data/todaysold.xml').read%>
+<% file.gsub! '<d:', '<'%>
+<% file.gsub! '<m:', '<'%>
+<% xml = Nokogiri::XML(file)%>
 
-<div class="visible-xs"><h1>Ticket Sales<br/><small><%= date.strftime("%A, %B %-d")%></small></h1></div>
-<div class="hidden-xs"><h1>Ticket Sales <small><%= date.strftime("%A, %B %-d")%></small></h1></div>
+<% if xml.at('StateDate').nil? %>
+  <h1>Ticket Sales</h1>
+  <p>No ticket sales have been made for today's shows.</p>
+<% else %>
+  <% date = DateTime.strptime(xml.at('StateDate').text,"%Y-%m-%dT%H:%M:%S")%>
+  <div class="visible-xs"><h1>Ticket Sales<br/><small><%= date.strftime("%A, %B %-d")%></small></h1></div>
+  <div class="hidden-xs"><h1>Ticket Sales <small><%= date.strftime("%A, %B %-d")%></small></h1></div>
+<% end %>
 
 <div class="list-group">
   <%xml.css('entry').each do |node|%>

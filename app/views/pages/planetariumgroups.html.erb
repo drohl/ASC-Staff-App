@@ -1,0 +1,24 @@
+<%require 'open-uri' #Wrapper to open web-based data with open() function %>
+<%require 'nokogiri' #Library to parse the XML file we'll open%>
+
+<%file = open('http://signs.adventuresci.org/data/rooms.xml').read%>
+<%file.gsub! '<d:', '<'%>
+<%file.gsub! '<m:', '<'%>
+<%xml = Nokogiri::XML(file)%>
+
+<h1>Groups in the Planetarium Today</h1>
+
+<dl class="dl-horizontal">
+  <% runningshow = "something" %>
+  <%xml.css('entry').each do |node|%>
+    <% if node.at('ItinerariesItemsProgramEventsStarttime').text != runningshow %>
+      <% date = DateTime.strptime(node.at('ItinerariesItemsProgramEventsStarttime').text,"%H%M")%>
+      <dt><%= date.strftime("%-I:%M")%> <%=node.at('ItinerariesItemsProgramEventsName').text%></dt>
+      <% runningshow = node.at('ItinerariesItemsProgramEventsStarttime').text %>
+    <%end%>
+    <dd>
+      <%=node.at('ItinerariesName').text%> (<%=node.at('SUMItinerariesAttendeesQuantity').text%>)
+    </dd>
+  <%end%>
+</dl>
+

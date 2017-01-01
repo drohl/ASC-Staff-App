@@ -5,4 +5,6 @@ class PagesController < ApplicationController
   end
   def allplanetarium
   end
+  def planetariumgroups
+  end
 end

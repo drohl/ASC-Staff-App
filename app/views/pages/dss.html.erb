@@ -1,24 +1,18 @@
 <%require 'open-uri' #Wrapper to open web-based data with open() function %>
 <%require 'nokogiri' #Library to parse the XML file we'll open%>
 
-<% link = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=97068b9c-1f14-4e85-86f0-80a7433f8ea1" %>
-<% user = ENV['altru_user'] %>
-<% pass = ENV['altru_pass'] %>
+<%file = open('http://signs.adventuresci.org/data/upcomingdsses.xml').read%>
+<%file.gsub! '<d:', '<'%>
+<%file.gsub! '<m:', '<'%>
+<%xml = Nokogiri::XML(file)%>
 
-<% file = open(link, http_basic_authentication: [user, pass]).read %>
-<% file.gsub! '<d:', '<'%>
-<% file.gsub! '<m:', '<'%>
-<% xml = Nokogiri::XML(file)%>
-
-<h1>Destination Solar System Shows</h1>
+<h1>Destination Solar System</h1>
 
 <dl class="dl-horizontal">
   <%xml.css('entry').each do |node|%>
-      <% date = DateTime.strptime(node.at('ProgramEventsStartdate').text,"%Y-%m-%dT%H:%M:%S")%>
-      <dt><%= date.strftime("%A %-m/%-d")%></dt>
-    <dd>
-      <% time = DateTime.strptime(node.at('ProgramEventsStarttime').text,"%H%M")%>
-      <%= time.strftime("%-I:%M")%> <%= node.at('ProgramEventsName').text%>
-    </dd>
+    <% date = DateTime.strptime(node.at('ProgramEventsStartdate').text,"%Y-%m-%dT%H:%M:%S")%>
+    <% time = DateTime.strptime(node.at('ProgramEventsStarttime').text,"%H%M")%>
+    <dt><%= date.strftime("%A %-m/%-d")%></dt>
+    <dd><%= time.strftime("%-I:%M %P")%></dd>
   <%end%>
 </dl>

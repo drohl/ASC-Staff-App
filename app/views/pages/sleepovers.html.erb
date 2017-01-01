@@ -1,0 +1,40 @@
+<%require 'open-uri' #Wrapper to open web-based data with open() function %>
+<%require 'nokogiri' #Library to parse the XML file we'll open%>
+
+<%file = open('http://signs.adventuresci.org/data/sleepovers.xml').read%>
+<%file.gsub! '<d:', '<'%>
+<%file.gsub! '<m:', '<'%>
+<%xml = Nokogiri::XML(file)%>
+
+<h1>Science Sleepovers</h1>
+
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Group</th>
+        <th>Lead</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%xml.css('entry').each do |node|%>
+        <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
+        <% group = node.at('Name').text %>
+        <% if date.today? %>
+          <tr class="success">
+        <% elsif date.past? %>
+          <tr class="danger">
+        <% else %>
+          <tr>
+        <% end %>
+          <td><%= date.strftime("%a %-m/%-d")%></td>
+          <td><%= group.split(" - ").first %> (<%= node.at('SUMItinerariesAttendeesQuantity').text %> guests)</td>
+          <td><%= node.at('ItinerariesLeadername').text %></td>
+          <td><%= node.at('ImportantNotes').text %></td>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+</div>

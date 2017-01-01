@@ -9,4 +9,6 @@ class PagesController < ApplicationController
   end
   def dss
   end
+  def sleepovers
+  end
 end

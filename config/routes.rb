@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "allplanetarium" => "pages#allplanetarium"
   get "planetariumgroups" => "pages#planetariumgroups"
   get "dss" => "pages#dss"
+  get "sleepovers" => "pages#sleepovers"
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

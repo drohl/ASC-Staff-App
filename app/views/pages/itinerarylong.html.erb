@@ -1,0 +1,70 @@
+<%require 'open-uri' #Wrapper to open web-based data with open() function %>
+<%require 'nokogiri' #Library to parse the XML file we'll open%>
+
+<%file = open('http://signs.adventuresci.org/data/programsthrunextweek.xml').read%>
+<%file.gsub! '<d:', '<'%>
+<%file.gsub! '<m:', '<'%>
+<%xml = Nokogiri::XML(file)%>
+<% runningdate = "reset" %>
+<% runningschool = "reset" %>
+<% runningitinerary = "reset" %>
+
+<h1>School Group Itineraries</h1>
+
+<%xml.css('entry').each do |node|%>
+  <% arrivaltime = DateTime.strptime(node.at('Arrivaltime').text,"%H%M")%>
+
+  <%# Add a header for each date %>
+  <% if node.at('Arrivaldate').text != runningdate %>
+    <% runningschool = "reset" %>
+    <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
+    <h2><%= date.strftime("%A %-m/%-d")%></h2>
+    <% runningdate = node.at('Arrivaldate').text %>
+  <%end%>
+
+  <%# Here we're at the start of each day's content %>
+
+  <%# Write a school header, once per school %>
+  <% if node.at('Name').text != runningschool%>
+    <div class="row">
+      <div class="col-sm-11 col-sm-offset-1 col-xs-12">
+        <div class="hidden-xs">
+          <h3><%= node.at('Name').text.split(" - ").first%> <small><%= arrivaltime.strftime("%-I:%M")%> arrival, lead is <%= node.at('ItinerariesLeadername').text%></small></h3>
+        </div>
+        <div class="visible-xs">
+          <h3><span class="glyphicon glyphicon-home"></span> <%= node.at('Name').text.split(" - ").first%><br/><small><%= arrivaltime.strftime("%-I:%M")%> arrival, lead is <%= node.at('ItinerariesLeadername').text%></small></h3>
+        </div>
+      </div>
+    </div>
+    <% runningschool = node.at('Name').text %>
+  <%end%>
+
+  <%# Check if school has programs beyond General Admission, create itineraries %>
+  <% if node.at('ItinerariesItemsProgramEventsName').text != ""%>
+    <% programtime = DateTime.strptime(node.at('ItinerariesItemsProgramEventsStarttime').text,"%H%M")%>
+      <div class="row">
+        <div class="col-sm-4 col-sm-offset-1 col-xs-12">
+          <% if node.at('ItinerariesName').text != runningitinerary %>
+            <strong>Itinerary for <%= node.at('ItinerariesName').text %></strong>
+            (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
+            <% runningitinerary = node.at('ItinerariesName').text %>
+          <%end%>
+        </div>
+        <div class="col-sm-1 col-xs-2">
+          <%= programtime.strftime("%-I:%M")%>
+        </div>
+        <div class="col-sm-4 col-xs-10">
+          <%= node.at('ItinerariesItemsProgramEventsName').text %>
+        </div>
+        <div class="col-sm-2 col-sm-offset-0 col-xs-10 col-xs-offset-2">
+          <em><%= node.at('ItinerariesItemsProgramEventsLocationsName').text %></em>
+        </div>
+      </div>
+  <%elsif node.at('ItinerariesName').text != node.next.at('ItinerariesName').text %>
+    <div class="row">
+      <div class="col-sm-11 col-sm-offset-1 col-xs-12">
+        <strong>Floor exploration only</strong> (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
+      </div>
+    </div>
+  <%end%>
+<%end%>

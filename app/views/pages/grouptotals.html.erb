@@ -1,0 +1,17 @@
+<%require 'open-uri' #Wrapper to open web-based data with open() function %>
+<%require 'nokogiri' #Library to parse the XML file we'll open%>
+
+<%file = open('http://signs.adventuresci.org/data/totalsforfacilities.xml').read%>
+<%file.gsub! '<d:', '<'%>
+<%file.gsub! '<m:', '<'%>
+<%xml = Nokogiri::XML(file)%>
+
+<h1>Daily Group Totals</h1>
+
+<dl class="dl-horizontal">
+  <%xml.css('entry').each do |node|%>
+    <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
+    <dt><%= date.strftime("%A %-m/%-d")%></dt>
+    <dd><%= node.at('SUMItinerariesAttendeesQuantity').text %></dd>
+  <%end%>
+</dl>

@@ -6,33 +6,38 @@
 <%end%>
   <h1>Staff Resources</h1>
 	<% if user_signed_in? %>
+    <blockquote>
+      <p>This is still a work in progress... please let me know about any glitches/errors you hit, or new ideas that come to mind. Thanks!</p>
+      <footer>Derrick</footer>
+    </blockquote>
     <div class="row">
-    <div class="col-sm-4">
-      <h3>Everyday</h3>
-      <div class="list-group" role="group" aria-label="...">
-        <%= link_to "Website", "http://adventuresci.org", class: "list-group-item" %>
-        <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item" %>
-        <%= link_to "Altru", "http://tiny.cc/altru", class: "list-group-item" %>
-        <%= link_to "Slack", "http://adventuresci.slack.com", class: "list-group-item" %>
+      <div class="col-sm-4">
+        <h3>Everyday</h3>
+        <div class="list-group" role="group" aria-label="...">
+          <%= link_to "Website", "http://adventuresci.org", class: "list-group-item" %>
+          <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item" %>
+          <%= link_to "Altru", "http://tiny.cc/altru", class: "list-group-item" %>
+          <%= link_to "Slack", "http://adventuresci.slack.com", class: "list-group-item" %>
+        </div>
       </div>
-    </div>
-    <div class="col-sm-4">
-      <h3>After hours</h3>
-      <div class="list-group" role="group" aria-label="...">
-        <%= link_to new_stay_path, class: "list-group-item active" do %>
-          Staying late
-          <% if Stay.count > 0 %>
-            <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
+      <div class="col-sm-4">
+        <h3>After hours</h3>
+        <div class="list-group" role="group" aria-label="...">
+          <%= link_to new_stay_path, class: "list-group-item active" do %>
+            Staying late
+            <% if Stay.count > 0 %>
+              <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
-    </div>
-    <div class="col-sm-4">
-      <h3>Time &amp; Attendance</h3>
-      <div class="list-group" role="group" aria-label="...">
-        <%= link_to "Employee", "https://adventuresci.attendanceondemand.com/ess/", class: "list-group-item" %>
-        <%= link_to "Supervisor", "https://adventuresci.attendanceondemand.com/operator/", class: "list-group-item" %>
-        <%= link_to "Payroll (Inova)", "https://inovapayroll.evolutionpayroll.com/ess#/login", class: "list-group-item" %>
+      <div class="col-sm-4">
+        <h3>Time &amp; Attendance</h3>
+        <div class="list-group" role="group" aria-label="...">
+          <%= link_to "Employee", "https://adventuresci.attendanceondemand.com/ess/", class: "list-group-item" %>
+          <%= link_to "Supervisor", "https://adventuresci.attendanceondemand.com/operator/", class: "list-group-item" %>
+          <%= link_to "Payroll (Inova)", "https://inovapayroll.evolutionpayroll.com/ess#/login", class: "list-group-item" %>
+        </div>
       </div>
     </div>
 	<% else %>

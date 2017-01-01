@@ -7,4 +7,6 @@ class PagesController < ApplicationController
   end
   def planetariumgroups
   end
+  def dss
+  end
 end

@@ -1,49 +1,82 @@
 <% unless user_signed_in? %>
   <div class="jumbotron center">
-  <%= link_to image_tag("asclogo.png" ), root_path %>
+    <%= link_to image_tag("asclogo.png" ), root_path %>
+    <h1>Staff Resources</h1>
+    <p>
+      <%= link_to "Log in", new_user_session_path, class: "btn btn-primary btn-lg" %>
+      <%= link_to "Sign up", new_user_registration_path, class: "btn btn-default btn-lg" %>
+    </p>
+  </div>
 <% else %>
-  <div>
-<%end%>
+
+  <%require 'open-uri' #Wrapper to open web-based data with open() function %>
+  <%require 'nokogiri' #Library to parse the XML file we'll open%>
+
+  <% file = open('http://signs.adventuresci.org/data/todaysold.xml').read%>
+  <% file.gsub! '<d:', '<'%>
+  <% file.gsub! '<m:', '<'%>
+  <% xml = Nokogiri::XML(file)%>
+  <% runningtotal = 0 %>
+  <% xml.css('entry').each do |node|%>
+    <% sold = node.at('TicketQuantity').text.to_i%>
+    <% refunded = node.at('TicketNumberRefunded').text.to_i%>
+    <% sold -= refunded %>
+    <% runningtotal += sold %>
+  <%end%>
+
+  <% ga = open('http://signs.adventuresci.org/data/gatoday.xml').read%>
+  <% ga.gsub! '<d:', '<'%>
+  <% ga.gsub! '<m:', '<'%>
+  <% gaxml = Nokogiri::XML(ga)%>
+  <% garunningtotal = 0 %>
+  <% gaxml.css('entry').each do |node|%>
+    <% sold = node.at('COUNTSalesOrderItemSalesOrderItemTicketTicketsActive').text.to_i%>
+    <% garunningtotal += sold %>
+  <%end%>
+
   <h1>Staff Resources</h1>
-	<% if user_signed_in? %>
-    <blockquote>
-      <p>This is still a work in progress... please let me know about any glitches/errors you hit, or new ideas that come to mind. Thanks!</p>
-      <footer>Derrick</footer>
-    </blockquote>
-    <div class="row">
-      <div class="col-sm-4">
-        <h3>Everyday</h3>
-        <div class="list-group" role="group" aria-label="...">
-          <%= link_to "Website", "http://adventuresci.org", class: "list-group-item" %>
-          <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item" %>
-          <%= link_to "Altru", "http://tiny.cc/altru", class: "list-group-item" %>
-          <%= link_to "Slack", "http://adventuresci.slack.com", class: "list-group-item" %>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <h3>After hours</h3>
-        <div class="list-group" role="group" aria-label="...">
-          <%= link_to new_stay_path, class: "list-group-item active" do %>
-            Staying late
-            <% if Stay.count > 0 %>
-              <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
-            <% end %>
+  <blockquote>
+    <p>Work in progress&hellip; please let me know about ideas or any glitches/errors you hit. Thanks!</p>
+    <footer>Derrick</footer>
+  </blockquote>
+  <div class="row">
+    <div class="col-lg-2 col-lg-push-8 col-md-4 col-sm-4 col-sm-push-4">
+      <h3>After hours</h3>
+      <div class="list-group" role="group" aria-label="...">
+        <%= link_to new_stay_path, class: "list-group-item active" do %>
+          Staying late
+          <% if Stay.count > 0 %>
+            <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
           <% end %>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <h3>Time &amp; Attendance</h3>
-        <div class="list-group" role="group" aria-label="...">
-          <%= link_to "Employee", "https://adventuresci.attendanceondemand.com/ess/", class: "list-group-item" %>
-          <%= link_to "Supervisor", "https://adventuresci.attendanceondemand.com/operator/", class: "list-group-item" %>
-          <%= link_to "Payroll (Inova)", "https://inovapayroll.evolutionpayroll.com/ess#/login", class: "list-group-item" %>
-        </div>
+        <% end %>
       </div>
     </div>
-	<% else %>
-		<p>
-			<%= link_to "Log in", new_user_session_path, class: "btn btn-primary btn-lg" %>
-			<%= link_to "Sign up", new_user_registration_path, class: "btn btn-default btn-lg" %>
-		</p>
-  <% end %>
-</div>
+    <div class="col-lg-2 col-lg-push-4 col-md-4 col-sm-4 col-sm-pull-4">
+      <h3>Every day</h3>
+      <div class="list-group" role="group" aria-label="...">
+        <%= link_to "Website", "http://adventuresci.org", class: "list-group-item" %>
+        <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item" %>
+        <%= link_to "Altru", "http://tiny.cc/altru", class: "list-group-item" %>
+        <%= link_to "Slack", "http://adventuresci.slack.com", class: "list-group-item" %>
+      </div>
+    </div>
+    <div class="col-lg-2 col-lg-push-6 col-md-4 col-sm-4">
+      <h3>Time &amp; pay</h3>
+      <div class="list-group" role="group" aria-label="...">
+        <%= link_to "Employee", "https://adventuresci.attendanceondemand.com/ess/", class: "list-group-item" %>
+        <%= link_to "Supervisor", "https://adventuresci.attendanceondemand.com/operator/", class: "list-group-item" %>
+        <%= link_to "Payroll (Inova)", "https://inovapayroll.evolutionpayroll.com/ess#/login", class: "list-group-item" %>
+      </div>
+    </div>
+    <div class="col-lg-6 col-lg-pull-6 col-md-12 col-sm-12">
+      <h3>Today</h3>
+      <div class="jumbotron center">
+        <h1><span class="glyphicon glyphicon-user"></span> <%=garunningtotal%></h1>
+        <h2>Guests admitted</h2>
+        <h1><span class="glyphicon glyphicon-film"></span> <%=runningtotal%></h1>
+        <h2>Planetarium tickets sold</h2>
+      </div>
+    </div>
+  </div>
+<% end %>
+

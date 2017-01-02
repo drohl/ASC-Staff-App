@@ -1,0 +1,52 @@
+<%require 'open-uri' #Wrapper to open web-based data with open() function %>
+<%require 'nokogiri' #Library to parse the XML file we'll open%>
+
+<%file = open('http://signs.adventuresci.org/data/rooms.xml').read%>
+<%file.gsub! '<d:', '<'%>
+<%file.gsub! '<m:', '<'%>
+<%xml = Nokogiri::XML(file)%>
+
+<h1>Today's Scheduled Groups</h1>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#sudekum">Sudekum</a></li>
+  <li><a data-toggle="tab" href="#benson">Benson</a></li>
+  <li><a data-toggle="tab" href="#eureka">Eureka</a></li>
+  <li><a data-toggle="tab" href="#cosmic">Cosmic</a></li>
+  <li><a data-toggle="tab" href="#jackwood">Wood</a></li>
+  <li><a data-toggle="tab" href="#yellow">Yellow</a></li>
+  <li><a data-toggle="tab" href="#green">Green</a></li>
+  <li><a data-toggle="tab" href="#blue">Blue</a></li>
+  <li><a data-toggle="tab" href="#skyline">Skyline</a></li>
+</ul>
+
+<div class="tab-content">
+  <div id="sudekum" class="tab-pane fade in active">
+    <%= populate_programs("Planetarium")%>
+  </div>
+  <div id="benson" class="tab-pane fade">
+    <%= populate_programs("Benson Lab")%>
+  </div>
+  <div id="eureka" class="tab-pane fade">
+    <%= populate_programs("Eureka Theater")%>
+  </div>
+  <div id="cosmic" class="tab-pane fade">
+    <%= populate_programs("Cosmic Rays")%>
+  </div>
+  <div id="jackwood" class="tab-pane fade">
+    <%= populate_programs("Jack Wood Hall")%>
+  </div>
+  <div id="yellow" class="tab-pane fade">
+    <%= populate_programs("Yellow Classroom")%>
+  </div>
+  <div id="green" class="tab-pane fade">
+    <%= populate_programs("Green Classroom")%>
+  </div>
+  <div id="blue" class="tab-pane fade">
+    <%= populate_programs("Blue Classroom")%>
+  </div>
+  <div id="skyline" class="tab-pane fade">
+    <%= populate_programs("Skyline Cafe")%>
+  </div>
+</div>
+

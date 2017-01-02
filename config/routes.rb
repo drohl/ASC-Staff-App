@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root 'pages#home'
   get "ticketsales" => "pages#ticketsales"
   get "allplanetarium" => "pages#allplanetarium"
-  get "planetariumgroups" => "pages#planetariumgroups"
+  get "groupprograms" => "pages#groupprograms"
   get "dss" => "pages#dss"
   get "sleepovers" => "pages#sleepovers"
   get "grouptotals" => "pages#grouptotals"

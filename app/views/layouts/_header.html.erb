@@ -28,7 +28,7 @@
           	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Planetarium <span class="caret"></span></a>
 	          <ul class="dropdown-menu">
 							<li><%= link_to "Ticket sales", ticketsales_path %></li>
-	            <li><%= link_to "Groups in today's shows", planetariumgroups_path %></li>
+	            <li><%= link_to "Today's scheduled groups", groupprograms_path %></li>
 	            <li><%= link_to "Schedule", allplanetarium_path %></li>
 	            <li><%= link_to "Destination Solar System", dss_path %></li>
 	          </ul>
@@ -39,7 +39,7 @@
 							<li class="dropdown-header">Today</li>
 							<li class="disabled"><%= link_to "Itineraries", '#' %></li>
 	            <li class="disabled"><%= link_to "Group counts", '#' %></li>
-	            <li class="disabled"><%= link_to "Programs by room", '#' %></li>
+	            <li><%= link_to "Programs by room", groupprograms_path %></li>
 	            <li role="separator" class="divider"></li>
 							<li class="dropdown-header">Thru Next Week</li>
 							<li><%= link_to "Itineraries", itinerarylong_path %></li>

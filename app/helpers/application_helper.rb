@@ -27,7 +27,7 @@ module ApplicationHelper
     if programsfound == false
       var += '<div class="alert alert-danger" role="alert">
           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-          No events are scheduled in Altru today in '+location+'.
+          No groups are scheduled in Altru today in '+location+'.
         </div>'
     end
     return var.html_safe

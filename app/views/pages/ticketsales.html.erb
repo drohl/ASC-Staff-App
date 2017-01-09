@@ -43,14 +43,21 @@
 
 
 <% soldlink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=6759ade2-c62f-48c9-9a69-4d60e5a14c92"%>
+<%# soldlink = "http://signs.adventuresci.org/data/samplesold.xml" %>
+<%# cancellink = "http://signs.adventuresci.org/data/samplerefunded.xml" %>
 <% user = ENV['altru_user']%>
 <% pass = ENV['altru_pass']%>
 
 <% altrusold = open(soldlink, http_basic_authentication: [user, pass]).read%>
+<%# altrucancel = open(soldlink, http_basic_authentication: [user, pass]).read%>
 
 <% altrusold.gsub! '<d:', '<'%>
 <% altrusold.gsub! '<m:', '<'%>
 <% sold = Nokogiri::XML(altrusold)%>
+
+<%# altrucancel.gsub! '<d:', '<'%>
+<%# altrucancel.gsub! '<m:', '<'%>
+<%# canceled = Nokogiri::XML(altrucancel)%>
 
 <% if sold.at('Date').nil? %>
   <h1>Ticket Sales</h1>
@@ -63,16 +70,24 @@
 
 <div class="list-group">
   <% sold.css('entry').each do |node|%>
+    <%eventid=""%>
     <div class="list-group-item">
       <% time = DateTime.strptime(node.at('Time').text,"%H%M")%>
       <%= time.strftime("%-I:%M")%> <%= node.at('Show').text%>
       <div class="progress">
-        <% sold = node.at('Count').text.to_i%>
+        <% count = node.at('Count').text.to_i%>
         <% capacity = node.at('Capacity').text%>
-        <% fraction = (sold / capacity.to_f * 100) %>
-        <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=sold%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="min-width: 1em; width: <%= fraction.round(1) %>% ;">
-          <%= sold %>
+        <% fraction = (count / capacity.to_f * 100) %>
+        <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="min-width: 1em; width: <%= fraction.round(1) %>% ;">
+          <%= count %>
         </div>
+<%#
+            <div class="progress-bar progress-bar-danger" style="min-width: 1em; width: <%= canceledfrac.round(1) %><!--%">-->
+<%#
+              <span class="sr-only"><%= canceledcount%> <%# tickets refunded</span>
+              <%=canceledcount%>
+<!--            </div>
+-->
       </div>
     </div>
   <%end%>

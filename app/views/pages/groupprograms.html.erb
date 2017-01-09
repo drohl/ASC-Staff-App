@@ -1,11 +1,6 @@
 <%require 'open-uri' #Wrapper to open web-based data with open() function %>
 <%require 'nokogiri' #Library to parse the XML file we'll open%>
 
-<%file = open('http://signs.adventuresci.org/data/rooms.xml').read%>
-<%file.gsub! '<d:', '<'%>
-<%file.gsub! '<m:', '<'%>
-<%xml = Nokogiri::XML(file)%>
-
 <h1>Today's Scheduled Groups</h1>
 
 <ul class="nav nav-tabs">
@@ -20,33 +15,35 @@
   <li><a data-toggle="tab" href="#skyline">Skyline</a></li>
 </ul>
 
+<% xml = get_programs() %>
+
 <div class="tab-content">
   <div id="sudekum" class="tab-pane fade in active">
-    <%= populate_programs("Planetarium")%>
+    <%= populate_from_file(xml,"Planetarium")%>
   </div>
   <div id="benson" class="tab-pane fade">
-    <%= populate_programs("Benson Lab")%>
+    <%= populate_from_file(xml,"Benson Lab")%>
   </div>
   <div id="eureka" class="tab-pane fade">
-    <%= populate_programs("Eureka Theater")%>
+    <%= populate_from_file(xml,"Eureka Theater")%>
   </div>
   <div id="cosmic" class="tab-pane fade">
-    <%= populate_programs("Cosmic Rays")%>
+    <%= populate_from_file(xml,"Cosmic Rays")%>
   </div>
   <div id="jackwood" class="tab-pane fade">
-    <%= populate_programs("Jack Wood Hall")%>
+    <%= populate_from_file(xml,"Jack Wood Hall")%>
   </div>
   <div id="yellow" class="tab-pane fade">
-    <%= populate_programs("Yellow Classroom")%>
+    <%= populate_from_file(xml,"Yellow Classroom")%>
   </div>
   <div id="green" class="tab-pane fade">
-    <%= populate_programs("Green Classroom")%>
+    <%= populate_from_file(xml,"Green Classroom")%>
   </div>
   <div id="blue" class="tab-pane fade">
-    <%= populate_programs("Blue Classroom")%>
+    <%= populate_from_file(xml,"Blue Classroom")%>
   </div>
   <div id="skyline" class="tab-pane fade">
-    <%= populate_programs("Skyline Cafe")%>
+    <%= populate_from_file(xml,"Skyline Cafe")%>
   </div>
 </div>
 

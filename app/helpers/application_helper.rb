@@ -1,9 +1,14 @@
 module ApplicationHelper
-  def populate_programs(location)
+ 
+  def get_programs()
     file = open('http://signs.adventuresci.org/data/rooms.xml').read
     file.gsub! '<d:', '<'
     file.gsub! '<m:', '<'
     xml = Nokogiri::XML(file)
+    return xml
+  end
+
+  def populate_from_file(xml,location)
     var = ""
     programsfound = false
     runningshow = "something"
@@ -32,5 +37,6 @@ module ApplicationHelper
     end
     return var.html_safe
   end
+
 end
 

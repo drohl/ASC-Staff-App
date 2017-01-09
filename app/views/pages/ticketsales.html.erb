@@ -65,7 +65,7 @@
   <% sold.css('entry').each do |node|%>
     <div class="list-group-item">
       <% time = DateTime.strptime(node.at('Time').text,"%H%M")%>
-      <%= time.strftime("%-I:%M")%> <%= node.at('Name').text%>
+      <%= time.strftime("%-I:%M")%> <%= node.at('Show').text%>
       <div class="progress">
         <% sold = node.at('Count').text.to_i%>
         <% capacity = node.at('Capacity').text%>

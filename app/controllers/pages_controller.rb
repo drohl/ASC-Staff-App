@@ -7,6 +7,8 @@ class PagesController < ApplicationController
   end
   def groupprograms
   end
+  def groups
+  end
   def dss
   end
   def sleepovers

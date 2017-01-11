@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get "grouptotals" => "pages#grouptotals"
   get "itinerarylong" => "pages#itinerarylong"
   get "itinerary" => "pages#itinerary"
+  get "groups" => "pages#groups"
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

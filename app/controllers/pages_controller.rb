@@ -15,4 +15,6 @@ class PagesController < ApplicationController
   end
   def itinerarylong
   end
+  def itinerary
+  end
 end

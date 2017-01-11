@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get "sleepovers" => "pages#sleepovers"
   get "grouptotals" => "pages#grouptotals"
   get "itinerarylong" => "pages#itinerarylong"
+  get "itinerary" => "pages#itinerary"
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

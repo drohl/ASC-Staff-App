@@ -1,39 +1,65 @@
 <%require 'open-uri' #Wrapper to open web-based data with open() function %>
 <%require 'nokogiri' #Library to parse the XML file we'll open%>
 
-<% soldlink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=6759ade2-c62f-48c9-9a69-4d60e5a14c92"%>
+
 <% user = ENV['altru_user']%>
 <% pass = ENV['altru_pass']%>
 
-<% altrusold = open(soldlink, http_basic_authentication: [user, pass]).read%>
+<% showslink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=5d43f0fa-dcaa-4c79-9e5d-0dda969d91de"%>
+<% shows = open(showslink, http_basic_authentication: [user, pass]).read%>
+<% shows.gsub! '<d:', '<'%>
+<% shows.gsub! '<m:', '<'%>
+<% shows = Nokogiri::XML(shows)%>
 
-<% altrusold.gsub! '<d:', '<'%>
-<% altrusold.gsub! '<m:', '<'%>
-<% sold = Nokogiri::XML(altrusold)%>
+<% soldlink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=156c820a-bf80-4517-ac99-5e9394b7c03b"%>
+<% sold = open(soldlink, http_basic_authentication: [user, pass]).read%>
+<% sold.gsub! '<d:', '<'%>
+<% sold.gsub! '<m:', '<'%>
+<% sold = Nokogiri::XML(sold)%>
 
-<% if sold.at('Date').nil? %>
+<% schoollink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=cf6e61d0-5fa9-49cc-8d33-8811626f47d9"%>
+<% school = open(schoollink, http_basic_authentication: [user, pass]).read%>
+<% school.gsub! '<d:', '<'%>
+<% school.gsub! '<m:', '<'%>
+<% school = Nokogiri::XML(school)%>
+
+<% if shows.at('ProgramEventsStartdate').nil? %>
   <h1>Ticket Sales</h1>
-  <p>No ticket sales have been made for today's shows.</p>
+  <p>No shows today.</p>
 <% else %>
-  <% date = DateTime.strptime(sold.at('Date').text,"%Y-%m-%dT%H:%M:%S")%>
+  <% date = DateTime.strptime(shows.at('ProgramEventsStartdate').text,"%Y-%m-%dT%H:%M:%S")%>
   <div class="visible-xs"><h1>Ticket Sales<br/><small><%= date.strftime("%A, %B %-d")%></small></h1></div>
   <div class="hidden-xs"><h1>Ticket Sales <small><%= date.strftime("%A, %B %-d")%></small></h1></div>
 <% end %>
 
 <div class="list-group">
-  <% sold.css('entry').each do |node|%>
-    <%eventid=""%>
+  <% shows.css('entry').each do |node|%>
     <div class="list-group-item">
-      <% time = DateTime.strptime(node.at('Time').text,"%H%M")%>
-      <%= time.strftime("%-I:%M")%> <%= node.at('Show').text%>
+      <% time = DateTime.strptime(node.at('ProgramEventsStarttime').text,"%H%M")%>
+      <%= time.strftime("%-I:%M")%> <%= node.at('ProgramEventsName').text%>
       <div class="progress">
-        <% count = node.at('Count').text.to_i%>
-        <% capacity = node.at('Capacity').text%>
-        <% fraction = (count / capacity.to_f * 100) %>
-        <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="min-width: 1em; width: <%= fraction.round(1) %>% ;">
-          <%= count %>
-        </div>
+        <% sold.css('entry').each do |nnode|%>
+          <% count = nnode.at('Count').text.to_i%>
+          <% capacity = nnode.at('Capacity').text%>
+          <% fraction = (count / capacity.to_f * 100) %>
+          <% if nnode.at('txobjid').text == node.at('txobjid').text%>
+            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="min-width: 1em; width: <%= fraction.round(1) %>% ;">
+              <%= count %>
+            </div>
+          <%end%>
+        <%end%>
+        <% school.css('entry').each do |nnnode|%>
+          <% schcount = nnnode.at('Count').text.to_i%>
+          <% schcapacity = nnnode.at('Capacity').text%>
+          <% schfraction = (schcount / schcapacity.to_f * 100) %>
+          <% if nnnode.at('txobjid').text == node.at('txobjid').text%>
+            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow=" <%=schcount%> " aria-valuemin="0" aria-valuemax="<%=schcapacity%>" style="min-width: 1em; width: <%= schfraction.round(1) %>% ;">
+            <%= schcount %>
+            </div>
+          <%end%>
+        <%end%>
       </div>
     </div>
   <%end%>
 </div>
+

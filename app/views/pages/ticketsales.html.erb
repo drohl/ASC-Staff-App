@@ -1,6 +1,7 @@
+<% @title="Ticket Sales" %>
+
 <%require 'open-uri' #Wrapper to open web-based data with open() function %>
 <%require 'nokogiri' #Library to parse the XML file we'll open%>
-
 
 <% user = ENV['altru_user']%>
 <% pass = ENV['altru_pass']%>
@@ -25,12 +26,10 @@
 <% school = Nokogiri::XML(school)%>
 
 <% if shows.at('ProgramEventsStartdate').nil? %>
-  <h1>Ticket Sales</h1>
   <p>No shows today.</p>
 <% else %>
   <% date = DateTime.strptime(shows.at('ProgramEventsStartdate').text,"%Y-%m-%dT%H:%M:%S")%>
-  <div class="visible-xs"><h1>Ticket Sales<br/><small><%= date.strftime("%A, %B %-d")%></small></h1></div>
-  <div class="hidden-xs"><h1>Ticket Sales <small><%= date.strftime("%A, %B %-d")%></small></h1></div>
+  <h2><%= date.strftime("%A, %B %-d")%></h2>
 <% end %>
 
 <div class="list-group">

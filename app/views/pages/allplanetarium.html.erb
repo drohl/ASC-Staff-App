@@ -1,3 +1,4 @@
+<% @title="Planetarium Schedule" %>
 <%require 'open-uri' #Wrapper to open web-based data with open() function %>
 <%require 'nokogiri' #Library to parse the XML file we'll open%>
 
@@ -5,8 +6,6 @@
 <%file.gsub! '<d:', '<'%>
 <%file.gsub! '<m:', '<'%>
 <%xml = Nokogiri::XML(file)%>
-
-<h1>Planetarium Schedule</h1>
 
 <dl class="dl-horizontal">
   <% runningdate = "something" %>

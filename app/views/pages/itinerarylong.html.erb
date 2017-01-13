@@ -1,3 +1,5 @@
+<% @title="Upcoming Group Itineraries" %>
+
 <%require 'open-uri' #Wrapper to open web-based data with open() function %>
 <%require 'nokogiri' #Library to parse the XML file we'll open%>
 
@@ -8,8 +10,6 @@
 <% runningdate = "reset" %>
 <% runningschool = "reset" %>
 <% runningitinerary = "reset" %>
-
-<h1>School Group Itineraries</h1>
 
 <%xml.css('entry').each do |node|%>
   <% arrivaltime = DateTime.strptime(node.at('Arrivaltime').text,"%H%M")%>

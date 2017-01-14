@@ -40,52 +40,65 @@
   <%group.gsub! '<m:', '<'%>
   <%group = Nokogiri::XML(group)%>
 
-
+  <% sciencelive = open('https://spreadsheets.google.com/feeds/list/1sHG-MldUpOushzh5VpYiycrCl1UhPjfLlzrV-IfJYj0/od6/public/values').read%>
+  <% sciencelive.gsub! '<gsx:', '<'%>
+  <% sciencelive = Nokogiri::XML(sciencelive)%>
  
   <blockquote>
     <p>Work in progress&hellip; please let me know about ideas or any glitches/errors you hit. Thanks!</p>
     <footer>Derrick</footer>
   </blockquote>
   <div class="row">
-    <div class="col-lg-2 col-lg-push-8 col-md-4 col-sm-4 col-sm-push-4">
-      <h3>After hours</h3>
-      <div class="list-group" role="group" aria-label="...">
-        <%= link_to new_stay_path, class: "list-group-item active" do %>
-          Staying late
-          <% if Stay.count > 0 %>
-            <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
-          <% end %>
-        <% end %>
-      </div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+      <h3>Today</h3>
+      <p><strong><%=garunningtotal%></strong> guest admissions</p>
+      <%group.css('entry').each do |node|%>
+        <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
+        <% if date.strftime("%A %-m/%-d") == DateTime.now.strftime("%A %-m/%-d")%>
+          <p><strong><%= node.at('SUMItinerariesAttendeesQuantity').text %></strong> group admissions</p>
+        <%end%>
+      <%end%>
+      <p><strong><%=runningtotal%></strong> planetarium tickets sold</p>
     </div>
-
-    <div class="col-lg-2 col-lg-push-4 col-md-4 col-sm-4 col-sm-pull-4">
+    <div class="col-md-5 col-sm-6 col-xs-12">
+      <h3>Science Live</h3>
+      <% sciencelive.css('entry').each do |node|%>
+        <% if node.at('date').text == DateTime.now.strftime("%A, %B %-d, %Y") %>
+          <% line1 = node.at('sciencelivea').text %>
+          <% line2 = node.at('scienceliveb').text %>
+          <p><%= line1.sub(/\*(.*)\*/,'<strong>\1</strong>').html_safe%></p>
+          <p><%= line2.sub(/\*(.*)\*/,'<strong>\1</strong>').html_safe%></p>
+        <%end%>
+      <%end%>
+    </div>
+    <div class="clearfix visible-sm-block"></div>
+    <div class="col-md-2 col-sm-6 col-xs-12">
       <h3>Every day</h3>
       <div class="list-group" role="group" aria-label="...">
         <%= link_to "Website", "http://adventuresci.org", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Altru", "http://tiny.cc/altru", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Slack", "http://adventuresci.slack.com", class: "list-group-item", :target => "_blank"  %>
+        <% if Stay.count > 0 %>
+          <%= link_to new_stay_path, class: "list-group-item active" do %>
+            Staying late
+            <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
+          <% end %>
+        <% else %>
+          <%= link_to new_stay_path, class: "list-group-item" do %>
+            Staying late
+          <% end %>
+        <% end %>
+
       </div>
     </div>
-    <div class="col-lg-2 col-lg-push-6 col-md-4 col-sm-4">
+    <div class="col-md-2 col-sm-6 col-xs-12">
       <h3>Time &amp; pay</h3>
       <div class="list-group" role="group" aria-label="...">
         <%= link_to "Employee", "https://adventuresci.attendanceondemand.com/ess/", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Supervisor", "https://adventuresci.attendanceondemand.com/operator/", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Payroll (Inova)", "https://inovapayroll.evolutionpayroll.com/ess#/login", class: "list-group-item", :target => "_blank"  %>
       </div>
-    </div>
-    <div class="col-lg-6 col-lg-pull-6 col-md-12 col-sm-12">
-      <h3>Today</h3>
-        <p><%=garunningtotal%> guests admissions</p>
-        <%group.css('entry').each do |node|%>
-          <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
-          <% if date.strftime("%A %-m/%-d") == DateTime.now.strftime("%A %-m/%-d")%>
-            <p><%= node.at('SUMItinerariesAttendeesQuantity').text %> group admissions</p>
-          <%end%>
-        <%end%>
-        <p><%=runningtotal%> planetarium tickets sold</p>
     </div>
   </div>
 <% end %>

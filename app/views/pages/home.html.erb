@@ -44,23 +44,23 @@
   <% sciencelive = Nokogiri::XML(sciencelive)%>
  
   <blockquote>
-    <p>Work in progress&hellip; please let me know about ideas or any glitches/errors you hit. Thanks!</p>
+    <p>Work in progress&hellip; please let me know if you manage to catch a glitch or error page. Thanks!</p>
     <footer>Derrick</footer>
   </blockquote>
   <div class="row">
     <div class="col-md-3 col-sm-6 col-xs-12">
-      <h3>Stats</h3>
-      <p><strong><%=garunningtotal%></strong> guest admissions</p>
+      <h2>Stats</h2>
+      <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong><%=garunningtotal%></strong> guest admissions</p>
       <%group.css('entry').each do |node|%>
         <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
         <% if date.strftime("%A %-m/%-d") == DateTime.now.strftime("%A %-m/%-d")%>
-          <p><strong><%= node.at('SUMItinerariesAttendeesQuantity').text %></strong> group admissions</p>
+          <p><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> <strong><%= node.at('SUMItinerariesAttendeesQuantity').text %></strong> group admissions</p>
         <%end%>
       <%end%>
-      <p><strong><%=runningtotal%></strong> planetarium tickets sold</p>
+      <p><span class="glyphicon glyphicon-film" aria-hidden="true"></span> <strong><%=runningtotal%></strong> planetarium tickets sold</p>
     </div>
     <div class="col-md-5 col-sm-6 col-xs-12">
-      <h3>Science Live</h3>
+      <h2>Science Live</h2>
       <% sciencelive.css('entry').each do |node|%>
         <% if node.at('date').text == DateTime.now.strftime("%A, %B %-d, %Y") %>
           <% line1 = node.at('sciencelivea').text %>
@@ -72,7 +72,7 @@
     </div>
     <div class="clearfix visible-sm-block"></div>
     <div class="col-md-2 col-sm-6 col-xs-12">
-      <h3>Resources</h3>
+      <h2>Resources</h2>
       <div class="list-group" role="group" aria-label="...">
         <%= link_to "Website", "http://adventuresci.org", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item", :target => "_blank"  %>
@@ -92,7 +92,7 @@
       </div>
     </div>
     <div class="col-md-2 col-sm-6 col-xs-12">
-      <h3>Time &amp; pay</h3>
+      <h2>Timecard</h2>
       <div class="list-group" role="group" aria-label="...">
         <%= link_to "Employee", "https://adventuresci.attendanceondemand.com/ess/", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Supervisor", "https://adventuresci.attendanceondemand.com/operator/", class: "list-group-item", :target => "_blank"  %>

@@ -35,6 +35,12 @@
     <% garunningtotal += sold %>
   <%end%>
 
+  <%group = open('http://signs.adventuresci.org/data/totalsforfacilities.xml').read%>
+  <%group.gsub! '<d:', '<'%>
+  <%group.gsub! '<m:', '<'%>
+  <%group = Nokogiri::XML(group)%>
+
+
  
   <blockquote>
     <p>Work in progress&hellip; please let me know about ideas or any glitches/errors you hit. Thanks!</p>
@@ -52,6 +58,7 @@
         <% end %>
       </div>
     </div>
+
     <div class="col-lg-2 col-lg-push-4 col-md-4 col-sm-4 col-sm-pull-4">
       <h3>Every day</h3>
       <div class="list-group" role="group" aria-label="...">
@@ -71,12 +78,14 @@
     </div>
     <div class="col-lg-6 col-lg-pull-6 col-md-12 col-sm-12">
       <h3>Today</h3>
-      <div class="jumbotron center">
-        <h1><span class="glyphicon glyphicon-user"></span> <%=garunningtotal%></h1>
-        <h2>Guests admitted</h2>
-        <h1><span class="glyphicon glyphicon-film"></span> <%=runningtotal%></h1>
-        <h2>Planetarium tickets sold</h2>
-      </div>
+        <p><%=garunningtotal%> guests admissions</p>
+        <%group.css('entry').each do |node|%>
+          <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
+          <% if date.strftime("%A %-m/%-d") == DateTime.now.strftime("%A %-m/%-d")%>
+            <p><%= node.at('SUMItinerariesAttendeesQuantity').text %> group admissions</p>
+          <%end%>
+        <%end%>
+        <p><%=runningtotal%> planetarium tickets sold</p>
     </div>
   </div>
 <% end %>

@@ -1,8 +1,7 @@
-<% @title="Staff Resources" %>
+<% @title="Staff Central" %>
 <% unless user_signed_in? %>
   <div class="jumbotron center">
     <%= link_to image_tag("asclogo.png" ), root_path %>
-    <h1>Staff Resources</h1>
     <p>
       <%= link_to "Log in", new_user_session_path, class: "btn btn-primary btn-lg" %>
       <%= link_to "Sign up", new_user_registration_path, class: "btn btn-default btn-lg" %>
@@ -50,7 +49,7 @@
   </blockquote>
   <div class="row">
     <div class="col-md-3 col-sm-6 col-xs-12">
-      <h3>Today</h3>
+      <h3>Stats</h3>
       <p><strong><%=garunningtotal%></strong> guest admissions</p>
       <%group.css('entry').each do |node|%>
         <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
@@ -73,7 +72,7 @@
     </div>
     <div class="clearfix visible-sm-block"></div>
     <div class="col-md-2 col-sm-6 col-xs-12">
-      <h3>Every day</h3>
+      <h3>Resources</h3>
       <div class="list-group" role="group" aria-label="...">
         <%= link_to "Website", "http://adventuresci.org", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item", :target => "_blank"  %>

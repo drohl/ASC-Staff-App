@@ -23,4 +23,6 @@ class PagesController < ApplicationController
   end
   def users
   end
+  def latelog
+  end
 end

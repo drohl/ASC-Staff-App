@@ -1,0 +1,25 @@
+<% @title="Late Log" %>
+
+<table class="table table-striped table-responsive">
+  <tr>
+    <th>Name</th>
+    <th>Added to list</th>
+    <th>Left</th>
+  </tr>
+  <tbody>
+  <% @complete = Stay.all.only_deleted.order('deleted_at DESC') %>
+  <% @active = Stay.all.order('created_at DESC') %>
+  <% @stays = @active+@complete %>
+  <% @stays.each do |stay| %>
+    <% if stay.deleted_at.nil?%>
+      <tr class="danger">
+    <%else%>
+      <tr>
+    <%end%>
+      <td><%= stay.user.name %></td>
+      <td><%= stay.created_at.in_time_zone("Central Time (US & Canada)").strftime("%-I:%M%P on %A, %-m/%e/%y") %></td>
+      <td><%= stay.deleted_at.in_time_zone("Central Time (US & Canada)").strftime("%-I:%M%P on %A, %-m/%e/%y") if !stay.deleted_at.nil?%></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

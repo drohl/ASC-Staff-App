@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161228182220) do
+ActiveRecord::Schema.define(version: 20170118025447) do
 
   create_table "stays", force: :cascade do |t|
     t.string   "note"
@@ -18,6 +18,8 @@ ActiveRecord::Schema.define(version: 20161228182220) do
     t.datetime "updated_at", null: false
     t.integer  "stay_id"
     t.integer  "user_id"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_stays_on_deleted_at"
     t.index ["stay_id"], name: "index_stays_on_stay_id"
     t.index ["user_id"], name: "index_stays_on_user_id"
   end

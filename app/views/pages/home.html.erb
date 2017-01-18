@@ -51,7 +51,7 @@
       <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong><%=garunningtotal%></strong> guest admissions</p>
       <%group.css('entry').each do |node|%>
         <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
-        <% if date.strftime("%A %-m/%-d") == DateTime.now.strftime("%A %-m/%-d")%>
+        <% if date.strftime("%A %-m/%-d") == DateTime.now.in_time_zone("Central Time (US & Canada)").strftime("%A %-m/%-d")%>
           <p><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> <strong><%= node.at('SUMItinerariesAttendeesQuantity').text %></strong> group admissions</p>
         <%end%>
       <%end%>

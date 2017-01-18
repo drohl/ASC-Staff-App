@@ -81,12 +81,12 @@
         <%= link_to "Altru", "http://tiny.cc/altru", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Slack", "http://adventuresci.slack.com", class: "list-group-item", :target => "_blank"  %>
         <% if Stay.count > 0 %>
-          <%= link_to new_stay_path, class: "list-group-item active" do %>
+          <%= link_to new_stay_path, class: "list-group-item active hidden" do %>
             Staying late
             <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
           <% end %>
         <% else %>
-          <%= link_to new_stay_path, class: "list-group-item" do %>
+          <%= link_to new_stay_path, class: "list-group-item hidden" do %>
             Staying late
           <% end %>
         <% end %>

@@ -4,5 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   has_many :stays
-  validates :name, presence: true 
+  validates :name, presence: true
+  validates_format_of :email, with: /\@adventuresci\.org/, message: 'must be an adventuresci.org address.'
+
 end

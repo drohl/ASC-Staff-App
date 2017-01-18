@@ -23,3 +23,11 @@
   <% end %>
   </tbody>
 </table>
+
+      <div class="hidden">
+        To modify from the console:
+          Stay.connection
+          Stay.all.only_deleted
+          tina = Stay.with_deleted.find(44)
+          tina.update_attribute(:deleted_at,"")
+      </div>

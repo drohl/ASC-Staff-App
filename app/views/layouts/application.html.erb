@@ -14,6 +14,10 @@
       <% flash.each do |name, msg| %>
         <%= content_tag(:div, msg, class: "alert alert-info") %>
       <% end %>
+      <blockquote>
+        <p>Work in progress&hellip; please let me know if you manage to catch a glitch or error page. Thanks!</p>
+        <footer>Derrick</footer>
+      </blockquote>
       <h1><%=@title%></h1>
       <%= yield %>
     </div>

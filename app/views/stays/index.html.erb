@@ -9,7 +9,7 @@
         <% min  = time.strftime("%M")%>
         <% apm  = time.strftime("%P")%>
         <h2 class="panel-title"><span class="glyphicon glyphicon-user"></span> <%= stay.user.name %>
-          <% if date != Time.now.strftime("%d") %>
+          <% if date != Time.now.in_time_zone("Central Time (US & Canada)").strftime("%d") %>
             (from <%= time.strftime("%A") %>)
           <% else %>
             <small><%= hr %>:<%= min %><%= apm %></small>

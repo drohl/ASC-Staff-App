@@ -1,16 +1,14 @@
-<% @title="Staff Central" %>
 <% unless user_signed_in? %>
   <div class="jumbotron center">
     <div class="form-group">
       <%= link_to image_tag("asclogo.png" ), root_path %>
     </div>
-    <p>
+    <h1>Staff Resources</h1>
       <%= link_to "Log in", new_user_session_path, class: "btn btn-primary btn-lg" %>
       <%= link_to "Sign up", new_user_registration_path, class: "btn btn-default btn-lg" %>
-    </p>
   </div>
 <% else %>
-
+<h1>ASC Staff Resources</h1>
   <%require 'open-uri' #Wrapper to open web-based data with open() function %>
   <%require 'nokogiri' #Library to parse the XML file we'll open%>
 
@@ -47,17 +45,29 @@
  
   <div class="row">
     <div class="col-md-3 col-sm-6 col-xs-12">
-      <h2>Stats</h2>
+      <h2>Today</h2>
       <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong><%=garunningtotal%></strong> guest admissions</p>
       <%group.css('entry').each do |node|%>
         <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
         <% if date.strftime("%A %-m/%-d") == DateTime.now.in_time_zone("Central Time (US & Canada)").strftime("%A %-m/%-d")%>
-          <p><span class="glyphicon glyphicon-apple" aria-hidden="true"></span> <strong><%= node.at('SUMItinerariesAttendeesQuantity').text %></strong> group admissions</p>
+          <p><span class="glyphicon glyphicon-bell" aria-hidden="true"></span> <strong><%= node.at('SUMItinerariesAttendeesQuantity').text %></strong> group admissions</p>
         <%end%>
       <%end%>
       <p><span class="glyphicon glyphicon-film" aria-hidden="true"></span> <strong><%=runningtotal%></strong> planetarium tickets sold</p>
+
+      <% if Stay.count > 0 %>
+        <%= link_to new_stay_path, class: "btn btn-primary" do %>
+          Staying late
+          <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
+        <% end %>
+      <% else %>
+        <%= link_to new_stay_path, class: "btn btn-default" do %>
+          Staying late
+        <% end %>
+      <% end %>
+
     </div>
-    <div class="col-md-5 col-sm-6 col-xs-12">
+    <div class="col-lg-5 col-md-4 col-sm-6 col-xs-12">
       <h2>Science Live</h2>
       <% sciencelive.css('entry').each do |node|%>
         <% if node.at('date').text == DateTime.now.in_time_zone("Central Time (US & Canada)").strftime("%A, %B %-d, %Y") %>
@@ -73,24 +83,13 @@
       <%end%>
     </div>
     <div class="clearfix visible-sm-block"></div>
-    <div class="col-md-2 col-sm-6 col-xs-12">
-      <h2>Resources</h2>
+    <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+      <h2>Links</h2>
       <div class="list-group" role="group" aria-label="...">
-        <%= link_to "Website", "http://adventuresci.org", class: "list-group-item", :target => "_blank"  %>
-        <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Altru", "http://tiny.cc/altru", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Slack", "http://adventuresci.slack.com", class: "list-group-item", :target => "_blank"  %>
-        <% if Stay.count > 0 %>
-          <%= link_to new_stay_path, class: "list-group-item active" do %>
-            Staying late
-            <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
-          <% end %>
-        <% else %>
-          <%= link_to new_stay_path, class: "list-group-item" do %>
-            Staying late
-          <% end %>
-        <% end %>
-
+        <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item", :target => "_blank"  %>
+        <%= link_to "Website", "http://adventuresci.org", class: "list-group-item", :target => "_blank"  %>
       </div>
     </div>
     <div class="col-md-2 col-sm-6 col-xs-12">

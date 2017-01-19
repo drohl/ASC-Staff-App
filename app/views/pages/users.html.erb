@@ -7,7 +7,7 @@
     <th>ID</th>
   </tr>
   <tbody>
-  <% @users = User.all %>
+  <% @users = User.all.order('created_at') %>
   <% @users.each do |user| %>
     <tr>
       <td><%= user.name %></td>

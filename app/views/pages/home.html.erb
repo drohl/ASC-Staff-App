@@ -81,6 +81,10 @@
           <p><strong>Additional Info:</strong> <%= info.html_safe%></p>
         <%end%>
       <%end%>
+      <div class="btn-group" role="group" aria-label="Science Live Links">
+        <%= link_to "View", "http://signs.adventuresci.org/sciencelive/", class: "btn btn-default", :target => "_blank"  %>
+        <%= link_to "Edit", "https://docs.google.com/spreadsheets/d/1sHG-MldUpOushzh5VpYiycrCl1UhPjfLlzrV-IfJYj0/edit#gid=0", class: "btn btn-default", :target => "_blank"  %>
+      </div>
     </div>
     <div class="clearfix visible-sm-block"></div>
     <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
@@ -90,6 +94,7 @@
         <%= link_to "Slack", "http://adventuresci.slack.com", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Website", "http://adventuresci.org", class: "list-group-item", :target => "_blank"  %>
+        <%= link_to "Brand Guide", "https://app.frontify.com/d/Mo9hIEF1B6T2/adventure-science-center-style-guide", class: "list-group-item", :target => "_blank"  %>
       </div>
     </div>
     <div class="col-md-2 col-sm-6 col-xs-12">

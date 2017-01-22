@@ -60,12 +60,20 @@
       </div>
     <%end%>
   <% elsif node.next.nil? %>
-    <%if node.at('ItinerariesName').text != node.previous.at('ItinerariesName').text %>
+    <%if !node.previous.at('ItinerariesName').nil? %>
+      <%if node.at('ItinerariesName').text != node.previous.at('ItinerariesName').text %>
+        <div class="row">
+          <div class="col-sm-11 col-sm-offset-1 col-xs-12">
+            <strong>Floor exploration only</strong> (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
+          </div>
+        </div>
+      <%end%>
+    <%else%>
       <div class="row">
         <div class="col-sm-11 col-sm-offset-1 col-xs-12">
           <strong>Floor exploration only</strong> (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
         </div>
-      </div>
+      </div>      
     <%end%>
   <%end%>
 

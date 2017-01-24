@@ -5,6 +5,7 @@
     <th>Name</th>
     <th>Added to list</th>
     <th>Left</th>
+    <th>ID</th>
   </tr>
   <tbody>
   <% @complete = Stay.all.only_deleted.order('deleted_at DESC') %>
@@ -19,6 +20,7 @@
       <td><%= stay.user.name %></td>
       <td><%= stay.created_at.in_time_zone("Central Time (US & Canada)").strftime("%-I:%M%P on %A, %-m/%e/%y") %></td>
       <td><%= stay.deleted_at.in_time_zone("Central Time (US & Canada)").strftime("%-I:%M%P on %A, %-m/%e/%y") if !stay.deleted_at.nil?%></td>
+      <td><%= stay.id %></td>
     </tr>
   <% end %>
   </tbody>

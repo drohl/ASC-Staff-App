@@ -2,13 +2,18 @@
 <p>If you'll be here past 5:30, add your name to the list at staff.adventuresci.org</p>
 <div id="stays" class="transitions-enabled">
   <% @stays.each do |stay| %>
-    <div class="box panel panel-default" >
+    <% time = stay.created_at.in_time_zone("Central Time (US & Canada)") %>
+    <% date = time.strftime("%d")%>
+    <% hr   = time.strftime("%l")%>
+    <% min  = time.strftime("%M")%>
+    <% apm  = time.strftime("%P")%>
+    <% if date != Time.now.in_time_zone("Central Time (US & Canada)").strftime("%d") %>
+      <div class="box panel panel-danger" >
+    <% else %>
+      <div class="box panel panel-default" >
+    <%end%>
       <div class="panel-heading">
-        <% time = stay.created_at.in_time_zone("Central Time (US & Canada)") %>
-        <% date = time.strftime("%d")%>
-        <% hr   = time.strftime("%l")%>
-        <% min  = time.strftime("%M")%>
-        <% apm  = time.strftime("%P")%>
+
         <h2 class="panel-title"><span class="glyphicon glyphicon-user"></span> <%= stay.user.name %>
           <% if date != Time.now.in_time_zone("Central Time (US & Canada)").strftime("%d") %>
             (from <%= time.strftime("%a %-m/%-d") %>)

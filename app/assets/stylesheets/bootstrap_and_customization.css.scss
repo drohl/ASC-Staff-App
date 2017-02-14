@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Muli:400,800');
+@import url('https://fonts.googleapis.com/css?family=Muli:400,900');
 @import url('https://fonts.googleapis.com/css?family=Oswald:400');
 $body-bg: #ecf0f1;
 $font-family-sans-serif: 'Muli', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -10,7 +10,7 @@ $brand-primary: #81be41;
 @import 'bootstrap';
 @import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css");
 .center {text-align: center; }
-.navbar-brand {font-weight: bold; }
+.navbar-brand, h2 {font-weight: bold; text-transform:uppercase}
 h1 {font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.02em;}
 h2 {color: $brand-primary;}
 body {color:#4c4c4c;}

@@ -11,7 +11,12 @@
 <% runningitinerary = "reset" %>
 
 <%xml.css('entry').each do |node|%>
-  <% arrivaltime = DateTime.strptime(node.at('Arrivaltime').text,"%H%M")%>
+  <% if node.at('Arrivaltime').text == '    ' %> <%# Altru's strings are always 4 characters for this field. If no time, then it's 4 spaces%>
+    <% arrivaltime = "Unspecified"%>
+  <% else %>
+    <% arrivaltime = DateTime.strptime(node.at('Arrivaltime').text,"%H%M")%>
+    <% arrivaltime = arrivaltime.strftime("%-I:%M")%>
+  <%end%>
 
   <%# Here we're at the start of each day's content %>
 
@@ -20,10 +25,10 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="hidden-xs">
-          <h3><%= node.at('Name').text.split(" - ").first%> <small><%= arrivaltime.strftime("%-I:%M")%> arrival, lead is <%= node.at('ItinerariesLeadername').text%></small></h3>
+          <h3><%= node.at('Name').text.split(" - ").first%> <small><%= arrivaltime%> arrival, lead is <%= node.at('ItinerariesLeadername').text%></small></h3>
         </div>
         <div class="visible-xs">
-          <h3><span class="glyphicon glyphicon-home"></span> <%= node.at('Name').text.split(" - ").first%><br/><small><%= arrivaltime.strftime("%-I:%M")%> arrival, lead is <%= node.at('ItinerariesLeadername').text%></small></h3>
+          <h3><span class="glyphicon glyphicon-home"></span> <%= node.at('Name').text.split(" - ").first%><br/><small><%= arrivaltime%> arrival, lead is <%= node.at('ItinerariesLeadername').text%></small></h3>
         </div>
       </div>
     </div>

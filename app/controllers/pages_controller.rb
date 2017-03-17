@@ -25,4 +25,6 @@ class PagesController < ApplicationController
   end
   def latelog
   end
+  def pltmsched
+  end
 end

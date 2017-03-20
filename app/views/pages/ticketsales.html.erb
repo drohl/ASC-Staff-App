@@ -43,7 +43,7 @@
           <% capacity = nnode.at('Capacity').text%>
           <% fraction = (count / capacity.to_f * 100) %>
           <% if nnode.at('txobjid').text == node.at('txobjid').text%>
-            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="min-width: 1em; width: <%= fraction.round(1) %>% ;">
+            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= fraction.round(1) %>% ;">
               <%= count %>
             </div>
           <%end%>
@@ -53,7 +53,7 @@
           <% schcapacity = nnnode.at('Capacity').text%>
           <% schfraction = (schcount / schcapacity.to_f * 100) %>
           <% if nnnode.at('txobjid').text == node.at('txobjid').text%>
-            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow=" <%=schcount%> " aria-valuemin="0" aria-valuemax="<%=schcapacity%>" style="min-width: 1em; width: <%= schfraction.round(1) %>% ;">
+            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow=" <%=schcount%> " aria-valuemin="0" aria-valuemax="<%=schcapacity%>" style="width: <%= schfraction.round(1) %>% ;">
             <%= schcount %>
             </div>
           <%end%>

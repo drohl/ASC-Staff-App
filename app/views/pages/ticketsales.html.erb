@@ -8,19 +8,22 @@
 
 <%# showslink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=5d43f0fa-dcaa-4c79-9e5d-0dda969d91de"%>
 <% showslink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=0c0ed47b-9dfd-41f5-b0ed-4a4610b43805"%>
-<% shows = open(showslink, http_basic_authentication: [user, pass]).read%>
+<% open(showslink, http_basic_authentication: [user, pass], 'User-Agent' => 'Excel').read%>
+<% shows = open(showslink, http_basic_authentication: [user, pass], 'User-Agent' => 'Excel').read%>
 <% shows.gsub! '<d:', '<'%>
 <% shows.gsub! '<m:', '<'%>
 <% shows = Nokogiri::XML(shows)%>
 
 <% soldlink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=156c820a-bf80-4517-ac99-5e9394b7c03b"%>
-<% sold = open(soldlink, http_basic_authentication: [user, pass]).read%>
+<% open(soldlink, http_basic_authentication: [user, pass], 'User-Agent' => 'Excel').read%>
+<% sold = open(soldlink, http_basic_authentication: [user, pass], 'User-Agent' => 'Excel').read%>
 <% sold.gsub! '<d:', '<'%>
 <% sold.gsub! '<m:', '<'%>
 <% sold = Nokogiri::XML(sold)%>
 
 <% schoollink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=cf6e61d0-5fa9-49cc-8d33-8811626f47d9"%>
-<% school = open(schoollink, http_basic_authentication: [user, pass]).read%>
+<% open(schoollink, http_basic_authentication: [user, pass], 'User-Agent' => 'Excel').read%>
+<% school = open(schoollink, http_basic_authentication: [user, pass], 'User-Agent' => 'Excel').read%>
 <% school.gsub! '<d:', '<'%>
 <% school.gsub! '<m:', '<'%>
 <% school = Nokogiri::XML(school)%>

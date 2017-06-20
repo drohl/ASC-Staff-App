@@ -1,85 +1,62 @@
 <% @title="Today's Group Itineraries" %>
 
-<%require 'open-uri' #Wrapper to open web-based data with open() function %>
-<%require 'nokogiri' #Library to parse the XML file we'll open%>
+<% user = ENV['altru_user']%>
+<% pass = ENV['altru_pass']%>
+<% link = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=9a258063-2180-42cf-b4fc-8bdd278e5917"%>
+<% odata = open(link, http_basic_authentication: [user, pass]).read %>
+<% json = JSON.parse odata %>
 
-<%file = open('http://signs.adventuresci.org/data/programs.xml').read%>
-<%file.gsub! '<d:', '<'%>
-<%file.gsub! '<m:', '<'%>
-<%xml = Nokogiri::XML(file)%>
-<% runningschool = "reset" %>
-<% runningitinerary = "reset" %>
+<% runningschool = "something"%>
+<% runningitinerary = "something"%>
 
-<%xml.css('entry').each do |node|%>
-  <% if node.at('Arrivaltime').text == '    ' %> <%# Altru's strings are always 4 characters for this field. If no time, then it's 4 spaces%>
+<% json["value"].each do |json|%>
+  <% if json['Arrivaltime'] == '    ' %> <%# Altru's strings are always 4 characters for this field. If no time, then it's 4 spaces%>
     <% arrivaltime = "Unspecified"%>
   <% else %>
-    <% arrivaltime = DateTime.strptime(node.at('Arrivaltime').text,"%H%M")%>
+    <% arrivaltime = DateTime.strptime(json['Arrivaltime'],"%H%M")%>
     <% arrivaltime = arrivaltime.strftime("%-I:%M")%>
   <%end%>
 
   <%# Here we're at the start of each day's content %>
 
   <%# Write a school header, once per school %>
-  <% if node.at('Name').text != runningschool%>
+  <% if json['Name'] != runningschool%>
     <div class="row">
       <div class="col-xs-12">
         <div class="hidden-xs">
-          <h3><%= node.at('Name').text.split(" - ").first%> <small><%= arrivaltime%> arrival, lead is <%= node.at('ItinerariesLeadername').text%></small></h3>
+          <h3><%= json['Name'].split(" - ").first%> <small><%= arrivaltime%> arrival, lead is <%= json['ItinerariesLeadername']%></small></h3>
         </div>
         <div class="visible-xs">
-          <h3><span class="glyphicon glyphicon-home"></span> <%= node.at('Name').text.split(" - ").first%><br/><small><%= arrivaltime%> arrival, lead is <%= node.at('ItinerariesLeadername').text%></small></h3>
+          <h3><span class="glyphicon glyphicon-home"></span> <%= json['Name'].split(" - ").first%><br/><small><%= arrivaltime%> arrival, lead is <%= json['ItinerariesLeadername']%></small></h3>
         </div>
       </div>
     </div>
-    <% runningschool = node.at('Name').text %>
+    <% runningschool = json['Name'] %>
   <%end%>
 
   <%# Check if school has programs beyond General Admission, create itineraries %>
-  <% if node.at('ItinerariesItemsProgramEventsName').text != ""%>
-    <% programtime = DateTime.strptime(node.at('ItinerariesItemsProgramEventsStarttime').text,"%H%M")%>
-      <div class="row">
-        <div class="col-sm-4 col-xs-12">
-          <% if node.at('ItinerariesName').text != runningitinerary %>
-            <strong>Itinerary for <%= node.at('ItinerariesName').text %></strong>
-            (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
-            <% runningitinerary = node.at('ItinerariesName').text %>
-          <%end%>
-        </div>
-        <div class="col-sm-1 col-xs-2">
-          <%= programtime.strftime("%-I:%M")%>
-        </div>
-        <div class="col-sm-4 col-xs-10">
-          <%= node.at('ItinerariesItemsProgramEventsName').text %>
-        </div>
-        <div class="col-sm-3 col-sm-offset-0 col-xs-10 col-xs-offset-2">
-          <em><%= node.at('ItinerariesItemsProgramEventsLocationsName').text %></em>
-        </div>
-      </div>
-  <%elsif !node.next.nil? %>
-    <%if node.at('ItinerariesName').text != node.next.at('ItinerariesName').text %>
-      <div class="row">
-        <div class="col-xs-12">
-          <strong>Floor exploration only</strong> (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
-        </div>
+  <div class="row">
+    <% if json['ItinerariesName'] != runningitinerary %>
+      <div class="col-sm-5 col-xs-12">
+        <strong><%= json['ItinerariesName'] %></strong>
+        (<%= json['SUMItinerariesAttendeesQuantity']%> guests)
+        <% runningitinerary = json['ItinerariesName'] %>
       </div>
     <%end%>
-  <% elsif node.next.nil? %>
-    <%if !node.previous.at('ItinerariesName').nil? %>
-      <%if node.at('ItinerariesName').text != node.previous.at('ItinerariesName').text %>
-        <div class="row">
-          <div class="col-xs-12">
-            <strong>Floor exploration only</strong> (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
-          </div>
-        </div>
-      <%end%>
+    <% if json['ItinerariesItemsProgramEventsName'].to_s != ""%>
+      <% programtime = DateTime.strptime(json['ItinerariesItemsProgramEventsStarttime'].to_s,"%H%M")%>
+      <div class="col-sm-1 col-sm-offset-1 col-xs-2">
+        <%= programtime.strftime("%-I:%M")%>
+      </div>
+      <div class="col-sm-4 col-xs-10">
+        <%= json['ItinerariesItemsProgramEventsName'] %>
+      </div>
+      <div class="col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-2">
+        <em><%= json['ItinerariesItemsProgramEventsLocationsName'] %></em>
+      </div>
     <%else%>
-      <div class="row">
-        <div class="col-xs-12">
-          <strong>Floor exploration only</strong> (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
-        </div>
-      </div>      
+      <div class="col-xs-12"></div>
     <%end%>
-  <%end%>
+  </div>
 
 <%end%>

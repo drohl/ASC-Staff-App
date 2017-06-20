@@ -1,88 +1,80 @@
 <% @title="Upcoming Group Itineraries" %>
 
-<%require 'open-uri' #Wrapper to open web-based data with open() function %>
-<%require 'nokogiri' #Library to parse the XML file we'll open%>
+<% user = ENV['altru_user']%>
+<% pass = ENV['altru_pass']%>
+<% link = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=d575dd0b-5d14-4959-a2fa-554ae00f9795"%>
+<% odata = open(link, http_basic_authentication: [user, pass]).read %>
+<% json = JSON.parse odata %>
 
-<%file = open('http://signs.adventuresci.org/data/programsthrunextweek.xml').read%>
-<%file.gsub! '<d:', '<'%>
-<%file.gsub! '<m:', '<'%>
-<%file.gsub! ' xml:space="preserve"', ''%>
+<% runningdate = "something"%>
+<% runningschool = "something"%>
+<% runningitinerary = "something"%>
 
-<%xml = Nokogiri::XML(file)%>
-<% runningdate = "reset" %>
-<% runningschool = "reset" %>
-<% runningitinerary = "reset" %>
-
-<%xml.css('entry').each do |node|%>
-  <% if node.at('Arrivaltime').text == '    ' %> <%# Altru's strings are always 4 characters for this field. If no time, then it's 4 spaces%>
+<% json["value"].each do |json|%>
+  <% if json['Arrivaltime'] == '    ' %> <%# Altru's strings are always 4 characters for this field. If no time, then it's 4 spaces%>
     <% arrivaltime = "Unspecified"%>
   <% else %>
-    <% arrivaltime = DateTime.strptime(node.at('Arrivaltime').text,"%H%M")%>
+    <% arrivaltime = DateTime.strptime(json['Arrivaltime'],"%H%M")%>
     <% arrivaltime = arrivaltime.strftime("%-I:%M")%>
   <%end%>
 
   <%# Add a header for each date %>
-  <% if node.at('Arrivaldate').text != runningdate %>
+  <% if json['Arrivaldate'] != runningdate %>
     <% runningschool = "reset" %>
-    <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
+    <% date = DateTime.strptime(json['Arrivaldate'],"%Y-%m-%dT%H:%M:%S")%>
     <h2><%= date.strftime("%A %-m/%-d")%></h2>
-    <% runningdate = node.at('Arrivaldate').text %>
+    <% runningdate = json['Arrivaldate'] %>
   <%end%>
 
   <%# Here we're at the start of each day's content %>
 
   <%# Write a school header, once per school %>
-  <% if node.at('Name').text != runningschool%>
+  <% if json['Name'] != runningschool%>
     <div class="row">
       <div class="col-sm-11 col-sm-offset-1 col-xs-12">
         <div class="hidden-xs">
-          <h3><%= node.at('Name').text.split(" - ").first%> <small><%= arrivaltime%> arrival, lead is <%= node.at('ItinerariesLeadername').text%></small></h3>
+          <h3><%= json['Name'].split(" - ").first%> <small><%= arrivaltime%> arrival, lead is <%= json['ItinerariesLeadername']%></small></h3>
         </div>
         <div class="visible-xs">
-          <h3><span class="glyphicon glyphicon-home"></span> <%= node.at('Name').text.split(" - ").first%><br/><small><%= arrivaltime%> arrival, lead is <%= node.at('ItinerariesLeadername').text%></small></h3>
+          <h3><span class="glyphicon glyphicon-home"></span> <%= json['Name'].split(" - ").first%><br/><small><%= arrivaltime%> arrival, lead is <%= json['ItinerariesLeadername']%></small></h3>
         </div>
       </div>
     </div>
-    <% runningschool = node.at('Name').text %>
+    <% runningschool = json['Name'] %>
   <%end%>
 
   <%# Check if school has programs beyond General Admission, create itineraries %>
-  <% if node.at('ItinerariesItemsProgramEventsName').text != ""%>
-    <% programtime = DateTime.strptime(node.at('ItinerariesItemsProgramEventsStarttime').text,"%H%M")%>
-      <div class="row">
-        <% if node.at('ItinerariesName').text != runningitinerary %>
-          <div class="col-sm-10 col-sm-offset-2 col-xs-12 itineraryheader">
-            <strong><%= node.at('ItinerariesName').text %> itinerary</strong>
-            (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
-            <% runningitinerary = node.at('ItinerariesName').text %>
-          </div>
-        <%end%>
-        <div class="right col-sm-1 col-sm-offset-3 col-xs-3">
-          <%= programtime.strftime("%-I:%M")%>
-        </div>
-        <div class="col-md-3 col-sm-4 col-xs-9">
-          <%= node.at('ItinerariesItemsProgramEventsName').text %>
-        </div>
-        <div class="col-md-5 col-sm-4 col-sm-offset-0 col-xs-9 col-xs-offset-3">
-          <em><%= node.at('ItinerariesItemsProgramEventsLocationsName').text %></em>
-        </div>
-      </div>
-  <%elsif !node.next.nil? %>
-    <%if node.at('ItinerariesName').text != node.next.at('ItinerariesName').text %>
-      <div class="row">
-        <div class="col-sm-10 col-sm-offset-2 col-xs-12">
-          <strong>Floor exploration only</strong> (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
-        </div>
+  <div class="row">
+    <% if json['ItinerariesName'] != runningitinerary %>
+      <div class="col-sm-10 col-sm-offset-2 col-xs-12 itineraryheader">
+        <strong><%= json['ItinerariesName'] %></strong>
+        (<%= json['SUMItinerariesAttendeesQuantity']%> guests)
+        <% runningitinerary = json['ItinerariesName'] %>
       </div>
     <%end%>
-  <% elsif node.next.nil? %>
-    <%if node.at('ItinerariesName').text != node.previous.at('ItinerariesName').text %>
-      <div class="row">
-        <div class="col-sm-10 col-sm-offset-2 col-xs-12">
-          <strong>Floor exploration only</strong> (<%= node.at('SUMItinerariesAttendeesQuantity').text%> guests)
-        </div>
+    <% if json['ItinerariesItemsProgramEventsName'].to_s != ""%>
+      <% programtime = DateTime.strptime(json['ItinerariesItemsProgramEventsStarttime'].to_s,"%H%M")%>
+      <div class="right col-sm-1 col-sm-offset-3 col-xs-3">
+        <%= programtime.strftime("%-I:%M")%>
       </div>
+      <div class="col-md-4 col-sm-4 col-xs-9">
+        <%= json['ItinerariesItemsProgramEventsName'] %>
+      </div>
+      <div class="col-md-4 col-sm-4 col-sm-offset-0 col-xs-9 col-xs-offset-3">
+        <em><%= json['ItinerariesItemsProgramEventsLocationsName'] %></em>
+      </div>
+    <%else%>
     <%end%>
-  <%end%>
-
+  </div>
 <%end%>
+
+
+
+
+
+
+
+
+
+
+

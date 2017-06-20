@@ -1,23 +1,26 @@
 <% @title="Planetarium Schedule" %>
-<%require 'open-uri' #Wrapper to open web-based data with open() function %>
-<%require 'nokogiri' #Library to parse the XML file we'll open%>
 
-<%file = open('http://signs.adventuresci.org/data/pltmall.xml').read%>
-<%file.gsub! '<d:', '<'%>
-<%file.gsub! '<m:', '<'%>
-<%xml = Nokogiri::XML(file)%>
+<% user = ENV['altru_user']%>
+<% pass = ENV['altru_pass']%>
 
-<dl class="dl-horizontal">
+<% link = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=51cfe339-0e2d-4b32-b63d-db34b36e9b43"%>
+<% odata = open(link, http_basic_authentication: [user, pass]).read %>
+<% json = JSON.parse odata %>
+
   <% runningdate = "something" %>
-  <%xml.css('entry').each do |node|%>
-    <% if node.at('ProgramEventsStartdate').text != runningdate %>
-      <% date = DateTime.strptime(node.at('ProgramEventsStartdate').text,"%Y-%m-%dT%H:%M:%S")%>
-      <dt><%= date.strftime("%A %-m/%-d")%></dt>
-      <% runningdate = node.at('ProgramEventsStartdate').text %>
+  <% json["value"].each do |json|%>
+    <div class="row">
+    <div class="col-sm-3 col-xs-12">
+    <% if json['ProgramEventsStartdate'] != runningdate %>
+      <% date = DateTime.strptime(json['ProgramEventsStartdate'],"%Y-%m-%dT%H:%M:%S")%>
+      <strong><%= date.strftime("%A %-m/%-d")%></strong>
+      <% runningdate = json['ProgramEventsStartdate'] %>
     <%end%>
-    <dd>
-      <% time = DateTime.strptime(node.at('ProgramEventsStarttime').text,"%H%M")%>
-      <%= time.strftime("%-I:%M")%> <%= node.at('ProgramEventsName').text%>
-    </dd>
+    </div>
+    <div class="col-sm-3 col-xs-3">
+      <% time = DateTime.strptime(json['ProgramEventsStarttime'],"%H%M")%>
+      <%= time.strftime("%-I:%M")%>
+    </div>
+    <div class="col-sm-6 col-xs-9"><%= json['ProgramEventsName']%></div>
+    </div>
   <%end%>
-</dl>

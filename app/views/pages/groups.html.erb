@@ -1,24 +1,25 @@
 <% @title="Today's Group Totals" %>
 
-<%require 'open-uri' #Wrapper to open web-based data with open() function %>
-<%require 'nokogiri' #Library to parse the XML file we'll open%>
+<% user = ENV['altru_user']%>
+<% pass = ENV['altru_pass']%>
 
-<%file = open('http://signs.adventuresci.org/data/groups.xml').read%>
-<%file.gsub! '<d:', '<'%>
-<%file.gsub! '<m:', '<'%>
-<%xml = Nokogiri::XML(file)%>
+<% link = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=547dd898-697f-4d98-834a-370799995b5f"%>
+<% odata = open(link, http_basic_authentication: [user, pass]).read %>
+<% json = JSON.parse odata %>
 
-<%xml.css('entry').each do |node|%>
+<% json["value"].each do |json|%>
   <div class="row">
     <div class="col-sm-1 col-xs-2">
-        <% time = DateTime.strptime(node.at('Arrivaltime').text,"%H%M")%>
+        <% time = DateTime.strptime(json['Arrivaltime'].to_s,"%H%M")%>
         <%=time.strftime("%-I:%M")%>
     </div>
     <div class="col-sm-5 col-xs-10">
-        <strong><%= node.at('Name').text.split(" - ").first%></strong>
+        <strong><%= json['Name'].split(" - ").first%></strong>
     </div>
     <div class="col-sm-6 col-sm-offset-0 col-xs-offset-2 col-xs-10">
-        <em><%= node.at('SUMItinerariesAttendeesQuantity').text%> guests</em>
+        <em><%= json['SUMItinerariesAttendeesQuantity']%> guests</em>
     </div>
   </div>
 <%end%>
+
+

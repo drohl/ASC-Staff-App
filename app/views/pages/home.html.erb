@@ -8,53 +8,49 @@
       <%= link_to "Sign up", new_user_registration_path, class: "btn btn-default btn-lg" %>
   </div>
 <% else %>
-<h1>ASC Staff Resources</h1>
-  <%require 'open-uri' #Wrapper to open web-based data with open() function %>
-  <%require 'nokogiri' #Library to parse the XML file we'll open%>
+  <% user = ENV['altru_user']%>
+  <% pass = ENV['altru_pass']%>
 
-  <% file = open('http://signs.adventuresci.org/data/todaysold.xml').read%>
-  <% file.gsub! '<d:', '<'%>
-  <% file.gsub! '<m:', '<'%>
-  <% xml = Nokogiri::XML(file)%>
-  <% runningtotal = 0 %>
-  <% xml.css('entry').each do |node|%>
-    <% sold = node.at('TicketQuantity').text.to_i%>
-    <% refunded = node.at('TicketNumberRefunded').text.to_i%>
+  <% galink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=1514f413-e470-497d-8261-f5ba8b3393e8"%>
+  <% gaodata = open(galink, http_basic_authentication: [user, pass]).read %>
+  <% gajson = JSON.parse gaodata %>
+  <% ga2 = 0 %>
+  <% gajson["value"].each do |ga|%>
+    <% ga2 = ga['SUMSalesOrderItemQuantity']%>
+  <%end%>
+
+  <% grouplink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=98f9a274-4ffa-4ca0-b079-8ca138109dd2"%>
+  <% groupodata = open(grouplink, http_basic_authentication: [user, pass]).read %>
+  <% groupjson = JSON.parse groupodata %>
+  <% group2 = 0 %>
+  <% groupjson["value"].each do |group|%>
+    <% date = DateTime.strptime(group['Arrivaldate'],"%Y-%m-%dT%H:%M:%S")%>
+    <% if date.strftime("%A %-m/%-d") == DateTime.now.in_time_zone("Central Time (US & Canada)").strftime("%A %-m/%-d")%>
+      <% group2 = group['SUMItinerariesAttendeesQuantity']%>
+    <%end%>
+  <%end%>
+
+  <% pltmlink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=6453bc96-899d-4897-8eb9-cad8d3ce3641"%>
+  <% pltmodata = open(pltmlink, http_basic_authentication: [user, pass]).read %>
+  <% pltmjson = JSON.parse pltmodata %>
+  <% pltm2 = 0 %>
+  <% pltmjson["value"].each do |pltm|%>
+    <% sold = pltm['TicketQuantity'].to_i%>
+    <% refunded = pltm['TicketNumberRefunded'].to_i%>
     <% sold -= refunded %>
-    <% runningtotal += sold %>
+    <% pltm2 += sold%>
   <%end%>
-
-  <% ga = open('http://signs.adventuresci.org/data/gatoday.xml').read%>
-  <% ga.gsub! '<d:', '<'%>
-  <% ga.gsub! '<m:', '<'%>
-  <% gaxml = Nokogiri::XML(ga)%>
-  <% garunningtotal = 0 %>
-  <% gaxml.css('entry').each do |node|%>
-    <% sold = node.at('COUNTSalesOrderItemSalesOrderItemTicketTicketsActive').text.to_i%>
-    <% garunningtotal += sold %>
-  <%end%>
-
-  <%group = open('http://signs.adventuresci.org/data/totalsforfacilities.xml').read%>
-  <%group.gsub! '<d:', '<'%>
-  <%group.gsub! '<m:', '<'%>
-  <%group = Nokogiri::XML(group)%>
 
   <% sciencelive = open('https://spreadsheets.google.com/feeds/list/1sHG-MldUpOushzh5VpYiycrCl1UhPjfLlzrV-IfJYj0/od6/public/values').read%>
   <% sciencelive.gsub! '<gsx:', '<'%>
   <% sciencelive = Nokogiri::XML(sciencelive)%>
- 
+<h1>ASC Staff Resources</h1> 
   <div class="row">
     <div class="col-md-3 col-sm-6 col-xs-12">
       <h2>Today</h2>
-      <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong><%=garunningtotal%></strong> guest admissions</p>
-      <%group.css('entry').each do |node|%>
-        <% date = DateTime.strptime(node.at('Arrivaldate').text,"%Y-%m-%dT%H:%M:%S")%>
-        <% if date.strftime("%A %-m/%-d") == DateTime.now.in_time_zone("Central Time (US & Canada)").strftime("%A %-m/%-d")%>
-          <p><span class="glyphicon glyphicon-bell" aria-hidden="true"></span> <strong><%= node.at('SUMItinerariesAttendeesQuantity').text %></strong> group admissions</p>
-        <%end%>
-      <%end%>
-      <p><span class="glyphicon glyphicon-film" aria-hidden="true"></span> <strong><%=runningtotal%></strong> planetarium tickets sold</p>
-
+      <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong><%=ga2%></strong> guest admissions</p>
+      <p><span class="glyphicon glyphicon-bell" aria-hidden="true"></span> <strong><%=group2%></strong> group admissions</p>
+      <p><span class="glyphicon glyphicon-film" aria-hidden="true"></span> <strong><%=pltm2%></strong> planetarium tickets sold</p>
       <% if Stay.count > 0 %>
         <%= link_to new_stay_path, class: "btn btn-primary" do %>
           Staying late
@@ -65,7 +61,6 @@
           Staying late
         <% end %>
       <% end %>
-
     </div>
     <div class="col-lg-5 col-md-4 col-sm-6 col-xs-12">
       <h2>Science Live</h2>

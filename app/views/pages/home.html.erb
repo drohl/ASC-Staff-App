@@ -41,6 +41,9 @@
     <% pltm2 += sold%>
   <%end%>
 
+  <% weatherlink = "https://api.darksky.net/forecast/f995721b9f9f558f3db6ec5938340885/36.1464,-86.7756"%>
+  <% weatherjson = JSON.parse open(weatherlink).read %>
+
   <% sciencelive = open('https://spreadsheets.google.com/feeds/list/1sHG-MldUpOushzh5VpYiycrCl1UhPjfLlzrV-IfJYj0/od6/public/values').read%>
   <% sciencelive.gsub! '<gsx:', '<'%>
   <% sciencelive = Nokogiri::XML(sciencelive)%>
@@ -61,6 +64,12 @@
           Staying late
         <% end %>
       <% end %>
+      <h2>Weather</h2>
+      <p><%= weatherjson["minutely"]["summary"]%> <%= weatherjson["hourly"]["summary"]%></p>
+      <p>Feels like: <strong><%= weatherjson["currently"]["apparentTemperature"].round%>&deg;F</strong><br/>
+        Today's high: <strong><%= weatherjson["daily"]["data"][0]["temperatureMax"].round%>&deg;F</strong>
+      </p>
+      <p><%= weatherjson["daily"]["summary"]%></p>
     </div>
     <div class="col-lg-5 col-md-4 col-sm-6 col-xs-12">
       <h2>Science Live</h2>

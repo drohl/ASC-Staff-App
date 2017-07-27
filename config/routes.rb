@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "allplanetarium" => "pages#allplanetarium"
   get "groupprograms" => "pages#groupprograms"
   get "dss" => "pages#dss"
+  get "eclipse" => "pages#eclipse"
   get "sleepovers" => "pages#sleepovers"
   get "grouptotals" => "pages#grouptotals"
   get "itinerarylong" => "pages#itinerarylong"

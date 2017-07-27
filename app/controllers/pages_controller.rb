@@ -13,6 +13,8 @@ class PagesController < ApplicationController
   end
   def dss
   end
+  def eclipse
+  end
   def sleepovers
   end
   def grouptotals

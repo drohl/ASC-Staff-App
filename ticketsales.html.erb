@@ -1,0 +1,53 @@
+<% @title="Ticket Sales" %>
+
+<%require 'open-uri' #Wrapper to open web-based data with open() function %>
+<% require 'json' #comment %>
+
+<% user = ENV['altru_user']%>
+<% pass = ENV['altru_pass']%>
+
+<% showslink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=0c0ed47b-9dfd-41f5-b0ed-4a4610b43805"%>
+<% soldlink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=156c820a-bf80-4517-ac99-5e9394b7c03b"%>
+<% reslink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=cf6e61d0-5fa9-49cc-8d33-8811626f47d9"%>
+
+<% showodata = open(showslink, http_basic_authentication: [user, pass]).read %>
+<% soldodata = open(soldlink, http_basic_authentication: [user, pass]).read %>
+<% resodata = open(reslink, http_basic_authentication: [user, pass]).read %>
+
+<% showjson = JSON.parse showodata %>
+<% soldjson = JSON.parse soldodata %>
+<% resjson = JSON.parse resodata %>
+
+<div class="list-group">
+  <% showjson["value"].each do |show|%>
+    <div class="list-group-item">
+      <% time = DateTime.strptime(show['ProgramEventsStarttime'],"%H%M")%>
+      <%= time.strftime("%-I:%M")%> <%= show['ProgramEventsName']%>
+      <div class="progress">
+        <% soldjson["value"].each do |sold|%>
+          <% if show["txobjid"] == sold["txobjid"] %>
+            <% count = sold['Count']%>
+            <% capacity = sold['Capacity']%>
+            <% percent = (count / capacity.to_f * 100).round(1) %>
+            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+              <%= count %>
+            </div>
+          <%end%>
+        <%end%>
+        <% resjson["value"].each do |res|%>
+          <% if show["txobjid"] == res["txobjid"] %>
+            <% count = res['Count']%>
+            <% capacity = res['Capacity']%>
+            <% percent = (count / capacity.to_f * 100).round(1) %>
+            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+              <%= count %>
+            </div>
+          <%end%>
+        <%end%>
+      </div>
+    </div>
+  <%end%>
+</div>
+
+
+

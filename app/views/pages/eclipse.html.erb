@@ -1,0 +1,115 @@
+<% @title="Eclipse Festival Indoor Ticket Sales" %>
+
+<%require 'open-uri' #Wrapper to open web-based data with open() function %>
+<% require 'json' #comment %>
+
+<% user = ENV['altru_user']%>
+<% pass = ENV['altru_pass']%>
+
+<% showslink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=ae91e0d9-66f6-44d7-ba80-68127719b1b0"%>
+
+<% showodata = open(showslink, http_basic_authentication: [user, pass]).read %>
+
+<% showjson = JSON.parse showodata %>
+
+<div class="row">
+  <div class="col-sm-4">
+    <h2>Saturday</h2>
+    <div class="list-group">
+      <% showjson["value"].each do |show|%>
+        <% if show['Date'] == "2017-08-19T00:00:00" %>
+          <div class="list-group-item">
+            <% time = DateTime.strptime(show['Time'],"%H%M")%>
+            <%= time.strftime("%-I:%M")%>
+            <div class="progress">
+              <% count = show['Sold'].to_i%>
+              <% capacity = show['Capacity']%>
+              <% refunded = show['Refunded'].to_i%>
+              <% count -= refunded %>
+              <% percent = (count / capacity.to_f * 100).round(1) %>
+              <% if percent == 100 %>
+                <div class="progress-bar progress-bar-striped progress-bar-danger" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+                  <%= count %>
+                </div>
+              <%  elsif percent >= 80 %>
+                <div class="progress-bar progress-bar-striped progress-bar-warning" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+                  <%= count %>
+                </div>
+              <% else %>
+                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+                  <%= count %>
+                </div>
+              <%end%>
+            </div>
+          </div>
+        <%end%>
+      <%end%>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <h2>Sunday</h2>
+    <div class="list-group">
+      <% showjson["value"].each do |show|%>
+        <% if show['Date'] == "2017-08-20T00:00:00" %>
+          <div class="list-group-item">
+            <% time = DateTime.strptime(show['Time'],"%H%M")%>
+            <%= time.strftime("%-I:%M")%>
+            <div class="progress">
+              <% count = show['Sold'].to_i%>
+              <% capacity = show['Capacity']%>
+              <% refunded = show['Refunded'].to_i%>
+              <% count -= refunded %>
+              <% percent = (count / capacity.to_f * 100).round(1) %>
+              <% if percent == 100 %>
+                <div class="progress-bar progress-bar-striped progress-bar-danger" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+                  <%= count %>
+                </div>
+              <%  elsif percent >= 80 %>
+                <div class="progress-bar progress-bar-striped progress-bar-warning" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+                  <%= count %>
+                </div>
+              <% else %>
+                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+                  <%= count %>
+                </div>
+              <%end%>
+            </div>
+          </div>
+        <%end%>
+      <%end%>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <h2>Monday</h2>
+    <div class="list-group">
+      <% showjson["value"].each do |show|%>
+        <% if show['Date'] == "2017-08-21T00:00:00" %>
+          <div class="list-group-item">
+            <% time = DateTime.strptime(show['Time'],"%H%M")%>
+            <%= time.strftime("%-I:%M")%>
+            <div class="progress">
+              <% count = show['Sold'].to_i%>
+              <% capacity = show['Capacity']%>
+              <% refunded = show['Refunded'].to_i%>
+              <% count -= refunded %>
+              <% percent = (count / capacity.to_f * 100).round(1) %>
+              <% if percent == 100 %>
+                <div class="progress-bar progress-bar-striped progress-bar-danger" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+                  <%= count %>
+                </div>
+              <%  elsif percent >= 80 %>
+                <div class="progress-bar progress-bar-striped progress-bar-warning" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+                  <%= count %>
+                </div>
+              <% else %>
+                <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+                  <%= count %>
+                </div>
+              <%end%>
+            </div>
+          </div>
+        <%end%>
+      <%end%>
+    </div>
+  </div>
+</div>

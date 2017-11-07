@@ -1,6 +1,6 @@
 <% @title="Ticket Sales" %>
 
-<%require 'open-uri' #Wrapper to open web-based data with open() function %>
+<% require 'open-uri' #Wrapper to open web-based data with open() function %>
 <% require 'json' #comment %>
 
 <% user = ENV['altru_user']%>
@@ -20,6 +20,8 @@
 
 <div class="list-group">
   <% showjson["value"].each do |show|%>
+    <% totalpercent = 0 %>
+    <% soldpercent = 0 %>
     <div class="list-group-item">
       <% time = DateTime.strptime(show['ProgramEventsStarttime'],"%H%M")%>
       <%= time.strftime("%-I:%M")%> <%= show['ProgramEventsName']%>
@@ -28,8 +30,9 @@
           <% if show["txobjid"] == sold["txobjid"] %>
             <% count = sold['Count']%>
             <% capacity = sold['Capacity']%>
-            <% percent = (count / capacity.to_f * 100).round(1) %>
-            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+            <% soldpercent = (count / capacity.to_f * 100).round(1) %>
+            <% totalpercent += soldpercent %>
+            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= soldpercent %>% ;">
               <%= count %>
             </div>
           <%end%>
@@ -38,8 +41,14 @@
           <% if show["txobjid"] == res["txobjid"] %>
             <% count = res['Count']%>
             <% capacity = res['Capacity']%>
-            <% percent = (count / capacity.to_f * 100).round(1) %>
-            <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= percent %>% ;">
+            <% respercent = (count / capacity.to_f * 100).round(1) %>
+            <% totalpercent += respercent%>
+            <% barclass = "progress-bar-info"%>
+            <% if totalpercent >= 100 %>
+              <% barclass = "progress-bar-danger"%>
+              <% respercent = 100 - soldpercent %>
+            <% end %>
+            <div class="progress-bar <%= barclass %> progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= respercent %>% ;">
               <%= count %>
             </div>
           <%end%>

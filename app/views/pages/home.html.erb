@@ -42,7 +42,7 @@
     <% pltm2 += sold%>
   <%end%>
 
-  <% weatherlink = "https://api.darksky.net/forecast/f995721b9f9f558f3db6ec5938340885/36.1464,-86.7756"%>
+  <% weatherlink = "http://signs.adventuresci.org/data/weather.json"%>
   <% weatherjson = JSON.parse open(weatherlink).read %>
 
   <% sciencelive = open('https://spreadsheets.google.com/feeds/list/1sHG-MldUpOushzh5VpYiycrCl1UhPjfLlzrV-IfJYj0/od6/public/values').read%>

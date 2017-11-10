@@ -11,13 +11,17 @@
   <% @refresh="60" %>
   <% user = ENV['altru_user']%>
   <% pass = ENV['altru_pass']%>
-
+  
   <% galink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=1514f413-e470-497d-8261-f5ba8b3393e8"%>
   <% gaodata = open(galink, http_basic_authentication: [user, pass]).read %>
   <% gajson = JSON.parse gaodata %>
-  <% ga2 = 0 %>
+  <% ga2 = 'something' %>
   <% gajson["value"].each do |ga|%>
-    <% ga2 = ga['SUMSalesOrderItemQuantity']%>
+    <% if ga['SUMSalesOrderItemQuantity'].nil? %>
+      <% ga2 = 0%>
+    <% else %>
+      <% ga2 = ga['SUMSalesOrderItemQuantity']%>
+    <%end%>
   <%end%>
 
   <% grouplink = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=98f9a274-4ffa-4ca0-b079-8ca138109dd2"%>

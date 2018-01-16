@@ -13,6 +13,6 @@ $brand-primary: #81be41;
 .navbar-brand, h2 {font-weight: bold; text-transform:uppercase}
 h1 {font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 0.02em;}
 h2 {color: $brand-primary;}
-body {color:#4c4c4c;}
+body, body a, body a:hover {color:#4c4c4c;}
 .right {text-align: right;}
 .itineraryheader {padding-top: 1em;}

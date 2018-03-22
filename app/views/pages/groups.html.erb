@@ -10,8 +10,10 @@
 <% json["value"].each do |json|%>
   <div class="row">
     <div class="col-sm-1 col-xs-2">
-        <% time = DateTime.strptime(json['Arrivaltime'].to_s,"%H%M")%>
-        <%=time.strftime("%-I:%M")%>
+        <% if json['Arrivaltime'].to_s != '    ' %>
+            <% time = DateTime.strptime(json['Arrivaltime'].to_s,"%H%M")%>
+            <%=time.strftime("%-I:%M")%>
+        <% end %>
     </div>
     <div class="col-sm-5 col-xs-10">
         <strong><%= json['Name'].split(" - ").first%></strong>

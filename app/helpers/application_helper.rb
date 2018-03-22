@@ -4,7 +4,7 @@ module ApplicationHelper
   def get_programs()
     user = ENV['altru_user']
     pass = ENV['altru_pass']
-    link = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=b111720e-fa60-4074-8d36-560ffc8a1727"
+    link = "https://altrurig04bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=b111720e-fa60-4074-8d36-560ffc8a1727"
     odata = open(link, http_basic_authentication: [user, pass]).read 
     json = JSON.parse odata 
     return json

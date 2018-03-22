@@ -3,7 +3,7 @@
 <% user = ENV['altru_user']%>
 <% pass = ENV['altru_pass']%>
 
-<% link = "https://altrurig01bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=e14af65e-2ae1-4b5c-a98d-da855c891989"%>
+<% link = "https://altrurig04bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=e14af65e-2ae1-4b5c-a98d-da855c891989"%>
 <% odata = open(link, http_basic_authentication: [user, pass]).read %>
 <% json = JSON.parse odata %>
 

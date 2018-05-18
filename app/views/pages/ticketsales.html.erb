@@ -52,9 +52,11 @@
             <% if totalpercent > 100 %>
               <% respercent = 100 - soldpercent %>
             <% end %>
-            <div class="progress-bar <%= barclass %> progress-bar-striped" role="progressbar" aria-valuenow=" <%=rescount%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= respercent %>% ;">
-              <%= rescount %>
-            </div>
+            <%= link_to(groupprograms_path) do %>
+              <div class="progress-bar <%= barclass %> progress-bar-striped" role="progressbar" aria-valuenow=" <%=rescount%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= respercent %>% ;">
+                <%= rescount %>
+              </div>
+            <%end%>
           <%end%>
         <%end%>
       </div>

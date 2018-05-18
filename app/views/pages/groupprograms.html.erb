@@ -21,6 +21,9 @@
 <div class="tab-content">
   <div id="sudekum" class="tab-pane fade in active">
     <%= populate_from_file(json,"Planetarium")%>
+    <%= link_to ticketsales_path, class: "btn btn-default" do %>
+      Ticket Sales
+    <% end %>
   </div>
   <div id="benson" class="tab-pane fade">
     <%= populate_from_file(json,"Benson Lab")%>

@@ -25,10 +25,10 @@ module ApplicationHelper
               runningshow = json['ItinerariesItemsProgramEventsStarttime']
             end
           var += '</div>'
-          var += '<div class="col-sm-4">'
+          var += '<div class="col-sm-4 col-sm-offset-0 col-xs-offset-1 col-xs-11">'
             var += json['Name'].split(' - ').first
           var += "</div>"
-          var += '<div class="col-sm-4">'
+          var += '<div class="col-sm-4 col-sm-offset-0 col-xs-offset-1 col-xs-11" style="margin-bottom:15px">'
             var += "<strong>" + json['SUMItinerariesAttendeesQuantity'].to_s + "</strong> - " + json['ItinerariesName']
           var += "</div>"
         var += "</div>"

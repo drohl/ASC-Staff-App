@@ -18,15 +18,18 @@ module ApplicationHelper
     json["value"].each do |json|
       if json['ItinerariesItemsProgramEventsLocationsName'] == location
         var += '<div class="row">'
-          var += '<div class="col-sm-6">'
+          var += '<div class="col-sm-4">'
             if json['ItinerariesItemsProgramEventsStarttime'] != runningshow
               date = DateTime.strptime(json['ItinerariesItemsProgramEventsStarttime'],"%H%M")
               var += '<strong>' + date.strftime("%-I:%M") + " " + json['ItinerariesItemsProgramEventsName'] + '</strong>'
               runningshow = json['ItinerariesItemsProgramEventsStarttime']
             end
           var += '</div>'
-          var += '<div class="col-sm-6">'
-            var += json['ItinerariesName'] + " (" + json['SUMItinerariesAttendeesQuantity'].to_s + ")"
+          var += '<div class="col-sm-4">'
+            var += json['Name'].split(' - ').first
+          var += "</div>"
+          var += '<div class="col-sm-4">'
+            var += "<strong>" + json['SUMItinerariesAttendeesQuantity'].to_s + "</strong> - " + json['ItinerariesName']
           var += "</div>"
         var += "</div>"
         programsfound = true

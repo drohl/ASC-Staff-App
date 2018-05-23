@@ -23,46 +23,53 @@
     <% totalpercent = 0 %>
     <% count = 0 %>
     <% soldpercent = 0 %>
+    
     <div class="list-group-item">
       <% time = DateTime.strptime(show['ProgramEventsStarttime'],"%H%M")%>
       <%= time.strftime("%-I:%M")%> <%= show['ProgramEventsName']%>
-      <div class="progress">
-        <% soldjson["value"].each do |sold|%>
-          <% if show["txobjid"] == sold["txobjid"] %>
-            <% count = sold['Count']%>
-            <% capacity = sold['Capacity']%>
-            <% soldpercent = (count / capacity.to_f * 100).round(1) %>
-            <% totalpercent += soldpercent %>
-            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= soldpercent %>% ;">
-              <%= count %>
-            </div>
-          <%end%>
-        <%end%>
-        <% resjson["value"].each do |res|%>
-          <% if show["txobjid"] == res["txobjid"] %>
-            <% rescount = res['Count']%>
-            <% capacity = res['Capacity']%>
-            <% respercent = (rescount / capacity.to_f * 100).round(1) %>
-            <% totalpercent += respercent%>
-            <% count += rescount %>
-            <% barclass = "progress-bar-info"%>
-            <% if count > capacity %>
-              <% barclass = "progress-bar-danger"%>
-            <% end %>
-            <% if totalpercent > 100 %>
-              <% respercent = 100 - soldpercent %>
-            <% end %>
-            <%= link_to(groupprograms_path) do %>
-              <div class="progress-bar <%= barclass %> progress-bar-striped" role="progressbar" aria-valuenow=" <%=rescount%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= respercent %>% ;">
-                <%= rescount %>
+
+      <% if show["ProgramEventsCapacity"] > 0 %>
+        <div class="progress">
+          <% soldjson["value"].each do |sold|%>
+            <% if show["txobjid"] == sold["txobjid"] %>
+              <% count = sold['Count']%>
+              <% capacity = sold['Capacity']%>
+              <% soldpercent = (count / capacity.to_f * 100).round(1) %>
+              <% totalpercent += soldpercent %>
+              <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= soldpercent %>% ;">
+                <%= count %>
               </div>
             <%end%>
           <%end%>
-        <%end%>
-      </div>
+          <% resjson["value"].each do |res|%>
+            <% if show["txobjid"] == res["txobjid"] %>
+              <% rescount = res['Count']%>
+              <% capacity = res['Capacity']%>
+              <% respercent = (rescount / capacity.to_f * 100).round(1) %>
+              <% totalpercent += respercent%>
+              <% count += rescount %>
+              <% barclass = "progress-bar-info"%>
+              <% if count > capacity %>
+                <% barclass = "progress-bar-danger"%>
+              <% end %>
+              <% if totalpercent > 100 %>
+                <% respercent = 100 - soldpercent %>
+              <% end %>
+              <%= link_to(groupprograms_path) do %>
+                <div class="progress-bar <%= barclass %> progress-bar-striped" role="progressbar" aria-valuenow=" <%=rescount%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= respercent %>% ;">
+                  <%= rescount %>
+                </div>
+              <%end%>
+            <%end%>
+          <%end%>
+        </div>
+      <%end%>  
+            
     </div>
+
   <%end%>
 </div>
+
 
 
 

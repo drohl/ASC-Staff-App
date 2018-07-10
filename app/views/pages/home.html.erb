@@ -74,15 +74,15 @@
           Staying late
         <% end %>
       <% end %>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
       <h2>Weather</h2>
       <p><%= weatherjson["minutely"]["summary"]%> <%= weatherjson["hourly"]["summary"]%></p>
       <p>Feels like: <strong><%= weatherjson["currently"]["apparentTemperature"].round%>&deg;F</strong><br/>
         Today's high: <strong><%= weatherjson["daily"]["data"][0]["temperatureMax"].round%>&deg;F</strong>
       </p>
       <p><%= weatherjson["daily"]["summary"]%></p>
-    </div>
-    <div class="col-lg-5 col-md-4 col-sm-6 col-xs-12">
-      <h2>Science Live</h2>
+      <!--h2>Science Live</h2>
       <% sciencelive.css('entry').each do |node|%>
         <% if node.at('date').text == DateTime.now.in_time_zone("Central Time (US & Canada)").strftime("%A, %B %-d, %Y") %>
           <% line1 = node.at('sciencelivea').text %>
@@ -98,10 +98,10 @@
       <div class="btn-group" role="group" aria-label="Science Live Links">
         <%= link_to "View", "http://signs.adventuresci.org/sciencelive/", class: "btn btn-default", :target => "_blank"  %>
         <%= link_to "Edit", "https://docs.google.com/spreadsheets/d/1sHG-MldUpOushzh5VpYiycrCl1UhPjfLlzrV-IfJYj0/edit#gid=0", class: "btn btn-default", :target => "_blank"  %>
-      </div>
+      </div-->
     </div>
     <div class="clearfix visible-sm-block"></div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+    <div class="col-md-3 col-sm-6 col-xs-12">
       <h2>Links</h2>
       <div class="list-group" role="group" aria-label="...">
         <%= link_to "Altru", "https://altrurig04bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/webui/webshellpage.aspx?databaseName=14AFCB42-1379-457A-AD0C-0CD6166E17F3", class: "list-group-item", :target => "_blank"  %>
@@ -109,14 +109,18 @@
         <%= link_to "Office 365", "http://login.microsoftonline.com", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Website", "http://adventuresci.org", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Brand Guide", "https://app.frontify.com/d/Mo9hIEF1B6T2/adventure-science-center-style-guide", class: "list-group-item", :target => "_blank"  %>
+
+
+        
       </div>
     </div>
-    <div class="col-md-2 col-sm-6 col-xs-12">
-      <h2>Timecard</h2>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+      <h2>Staff Tools</h2>
       <div class="list-group" role="group" aria-label="...">
-        <%= link_to "Employee", "https://adventuresci.attendanceondemand.com/ess/", class: "list-group-item", :target => "_blank"  %>
-        <%= link_to "Supervisor", "https://adventuresci.attendanceondemand.com/operator/", class: "list-group-item", :target => "_blank"  %>
+        <%= link_to "Timecard (Employee)", "https://adventuresci.attendanceondemand.com/ess/", class: "list-group-item", :target => "_blank"  %>
+        <%= link_to "Timecard (Supervisor)", "https://adventuresci.attendanceondemand.com/operator/", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Payroll (Inova)", "https://inovapayroll.evolutionpayroll.com/ess#/login", class: "list-group-item", :target => "_blank"  %>
+        <%= link_to "Benefits (Employee Navigator)", "https://www.employeenavigator.com/benefits/Account/Login", class: "list-group-item", :target => "_blank"  %>
       </div>
     </div>
   </div>

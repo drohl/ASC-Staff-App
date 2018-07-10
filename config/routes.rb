@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get "dss" => "pages#dss"
   get "eclipse" => "pages#eclipse"
   get "sleepovers" => "pages#sleepovers"
+  get "labs" => "pages#labs"
   get "grouptotals" => "pages#grouptotals"
   get "itinerarylong" => "pages#itinerarylong"
   get "itinerary" => "pages#itinerary"

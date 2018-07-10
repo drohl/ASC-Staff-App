@@ -17,6 +17,8 @@ class PagesController < ApplicationController
   end
   def sleepovers
   end
+  def labs
+  end
   def grouptotals
   end
   def itinerarylong

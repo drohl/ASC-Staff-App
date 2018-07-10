@@ -1,0 +1,52 @@
+<% @title="Public Labs" %>
+<% @refresh="300" %>
+
+  <% user = ENV['altru_user']%>
+  <% pass = ENV['altru_pass']%>
+  <% require 'open-uri' #Wrapper to open web-based data with open() function %>
+
+
+<% labslink = "https://altrurig04bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=eb17443a-462d-493b-9a9c-24d2c79e6765"%>
+<% soldlink = "https://altrurig04bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=6f9a94cb-bcce-4059-9f6c-45957dbfa8d2"%>
+
+<% labodata = open(labslink, http_basic_authentication: [user, pass]).read %>
+<% soldodata = open(soldlink, http_basic_authentication: [user, pass]).read %>
+
+<% labjson = JSON.parse labodata %>
+<% soldjson = JSON.parse soldodata %>
+
+<div class="list-group">
+  <% labjson["value"].each do |lab|%>
+    <% count = 0 %>
+    <% soldpercent = 0 %>
+    
+    <div class="list-group-item">
+      <% date = DateTime.strptime(lab['Date'],"%Y-%m-%dT%H:%M:%S")%>
+      <% time = DateTime.strptime(lab['Time'],"%H%M")%>
+      <p>
+      <strong><%= lab['Name']%></strong>
+      <br/>
+      <%= date.strftime("%A, %B %e")%> at <%= time.strftime("%l:%M %p")%>
+    </p>
+
+      <div class="progress">
+        <% soldjson["value"].each do |sold|%>
+          <% if lab["txobjid"] == sold["txobjid"] %>
+            <% count = sold['Count']%>
+            <% capacity = lab['Capacity']%>
+            <% soldpercent = (count / capacity.to_f * 100).round(1) %>
+            <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow=" <%=count%> " aria-valuemin="0" aria-valuemax="<%=capacity%>" style="width: <%= soldpercent %>% ;">
+              <%= count %>
+            </div>
+          <%end%>
+        <%end%>
+      </div>
+            
+    </div>
+
+  <%end%>
+</div>
+
+
+
+

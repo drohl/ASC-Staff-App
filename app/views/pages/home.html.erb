@@ -77,11 +77,14 @@
     </div>
     <div class="col-md-3 col-sm-6 col-xs-12">
       <h2>Weather</h2>
-      <p><%= weatherjson["minutely"]["summary"]%> <%= weatherjson["hourly"]["summary"]%></p>
-      <p>Feels like: <strong><%= weatherjson["currently"]["apparentTemperature"].round%>&deg;F</strong><br/>
+      <script type='text/javascript' src='https://darksky.net/widget/default-small/36.1464,-86.7756/us12/en.js?width=159&height=&title=Nashville, TN&textColor=333333&bgColor=transparent&transparency=true&skyColor=81be41&fontFamily=Arial&customFont=https://fonts.googleapis.com/css\family\\Muli&units=us'></script>
+      <h3 style="margin-top:0;"><%= weatherjson["minutely"]["summary"]%></h3>
+      <!--<p>Feels like: <strong><%= weatherjson["currently"]["apparentTemperature"].round%>&deg;F</strong><br/>
         Today's high: <strong><%= weatherjson["daily"]["data"][0]["temperatureMax"].round%>&deg;F</strong>
-      </p>
-      <p><%= weatherjson["daily"]["summary"]%></p>
+      </p>-->
+
+      <p><strong>Low:</strong> <%= weatherjson["daily"]["data"][0]["temperatureMin"].round%>&deg; <strong>High:</strong> <%= weatherjson["daily"]["data"][0]["temperatureMax"].round%>&deg;</p>
+      <p><%= weatherjson["hourly"]["summary"]%> <%= weatherjson["daily"]["summary"]%></p>
       <!--h2>Science Live</h2>
       <% sciencelive.css('entry').each do |node|%>
         <% if node.at('date').text == DateTime.now.in_time_zone("Central Time (US & Canada)").strftime("%A, %B %-d, %Y") %>

@@ -23,6 +23,7 @@
   <% if json['Arrivaldate'] != runningdate %>
     <% runningschool = "reset" %>
     <% date = DateTime.strptime(json['Arrivaldate'],"%Y-%m-%dT%H:%M:%S")%>
+    <hr>
     <h2><%= date.strftime("%A %-m/%-d")%></h2>
     <% runningdate = json['Arrivaldate'] %>
   <%end%>
@@ -34,10 +35,10 @@
     <div class="row">
       <div class="col-sm-11 col-sm-offset-1 col-xs-12">
         <div class="hidden-xs">
-          <h3><%= json['Name'].split(" - ").first%> <small><%= arrivaltime%> arrival, lead is <%= json['ItinerariesLeadername']%></small></h3>
+          <h3><%= json['Name'].split(" - ").first%> <small><%= arrivaltime%> arrival, lead is <%= json['ItinerariesLeadername']%>, <%=json['ImportantNotes'].gsub(/\n/, ', ')%></small></h3>
         </div>
         <div class="visible-xs">
-          <h3><span class="glyphicon glyphicon-home"></span> <%= json['Name'].split(" - ").first%><br/><small><%= arrivaltime%> arrival, lead is <%= json['ItinerariesLeadername']%></small></h3>
+          <h3><span class="glyphicon glyphicon-home"></span> <%= json['Name'].split(" - ").first%><br/><small><%= arrivaltime%> arrival</small></h3>
         </div>
       </div>
     </div>

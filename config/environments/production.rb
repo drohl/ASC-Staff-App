@@ -90,7 +90,7 @@ Rails.application.configure do
     domain:               'adventuresci.org',
     user_name:            ENV['office_user'],
     password:             ENV['office_pass'],
-    authentication:       :plain,
+    authentication:       "login",
     enable_starttls_auto: true
   }
 end

@@ -1,4 +1,4 @@
-<% @title="Today's Group Itineraries" %>
+<% @title="Group Itineraries: " + Date.today.to_s(:long)%>
 
 <% user = ENV['altru_user']%>
 <% pass = ENV['altru_pass']%>
@@ -10,6 +10,7 @@
 <% runningschool = "something"%>
 <% runningitinerary = "something"%>
 
+<div class="content">
 <% json["value"].each do |json|%>
   <% if json['Arrivaltime'] == '    ' %> <%# Altru's strings are always 4 characters for this field. If no time, then it's 4 spaces%>
     <% arrivaltime = "Unspecified"%>
@@ -17,6 +18,12 @@
     <% arrivaltime = DateTime.strptime(json['Arrivaltime'],"%H%M")%>
     <% arrivaltime = arrivaltime.strftime("%-I:%M")%>
   <%end%>
+  <% if json['ItinerariesLeadername'] == nil%>
+    <% leader = "anybody&rsquo;s guess".html_safe%>
+  <%else%>
+    <% leader = json['ItinerariesLeadername']%>
+  <%end%>
+
 
   <%# Here we're at the start of each day's content %>
 
@@ -24,12 +31,14 @@
   <% if json['Name'] != runningschool%>
     <div class="row">
       <div class="col-xs-12">
-        <div class="hidden-xs">
-          <h3><%= json['Name'].split(" - ").first%> <small><%= arrivaltime%> arrival, lead is <%= json['ItinerariesLeadername']%>, <%=json['ImportantNotes'].gsub(/\n/, ', ')%></small></h3>
+        <div>
+          <h3><%= arrivaltime%>&mdash;<%= json['Name'].split(" - ").first%><br/>
+            <small>Lead is <%=leader%><br/>
+              <%=json['ImportantNotes'].gsub(/\n/,'<br/>').html_safe%></small></h3>
         </div>
-        <div class="visible-xs">
-          <h3><span class="glyphicon glyphicon-home"></span> <%= json['Name'].rpartition(" - ").first%><br/><small><%= arrivaltime%> arrival</small></h3>
-        </div>
+        <!--div class="visible-xs">
+          <h3><span class="glyphicon glyphicon-home"></span> <%= json['Name'].split(" - ").first%><br/><small><%= arrivaltime%> arrival</small></h3>
+        </div-->
       </div>
     </div>
     <% runningschool = json['Name'] %>
@@ -61,3 +70,4 @@
   </div>
 
 <%end%>
+</div>

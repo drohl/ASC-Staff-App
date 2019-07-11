@@ -22,7 +22,7 @@ gem 'nokogiri', '~> 1.7'
 
 group :development, :test do
   gem 'byebug', platform: :mri
-  gem 'sqlite3'
+  gem "sqlite3", "~> 1.3.6"
 end
 
 group :development do

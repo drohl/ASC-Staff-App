@@ -17,6 +17,12 @@
         <%= content_tag(:div, msg, class: "alert alert-info") %>
       <% end %>
       <h1><%=@title%></h1>
+      <div class="only-print" style="text-align:center;">
+        <hr>
+        <h2>This information may be outdated</h2>
+        <h4>When possible, save paper and stay current&mdash;<br/>visit staff.adventuresci.org from any device.</h4>
+        <hr>
+      </div>
       <%= yield %>
     </div>
   </body>

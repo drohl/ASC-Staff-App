@@ -1,4 +1,5 @@
-<% @title="Group Itineraries: " + Date.today.to_s(:long)%>
+<% Time.zone = 'Central Time (US & Canada)' %>
+<% @title="Group Itineraries: " + Time.zone.now.to_date.to_s(:long)%>
 
 <% user = ENV['altru_user']%>
 <% pass = ENV['altru_pass']%>

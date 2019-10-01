@@ -1,0 +1,51 @@
+<% @title="Reservation Check-up" %>
+
+  <% user = ENV['altru_user']%>
+  <% pass = ENV['altru_pass']%>
+  <% require 'open-uri' #Wrapper to open web-based data with open() function %>
+
+
+<% showslink = "https://altrurig04bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=3550e160-5a44-4a34-8a2f-5aada726cc17"%>
+<% reslink = "https://altrurig04bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=4c6df93c-7659-41bf-855b-00ac0d1a616a"%>
+
+<% showodata = open(showslink, http_basic_authentication: [user, pass]).read %>
+<% resodata = open(reslink, http_basic_authentication: [user, pass]).read %>
+
+<% showjson = JSON.parse showodata %>
+<% resjson = JSON.parse resodata %>
+
+<% showjson["value"].each do |show|%>
+  <% showtime = DateTime.strptime(show['ProgramEventsStartdate']+show['ProgramEventsStarttime'],"%Y-%m-%dT00:00:00%H%M")%>
+  <% endtime = DateTime.strptime(show['ProgramEventsEnddate']+show['ProgramEventsEndtime'],"%Y-%m-%dT00:00:00%H%M")%>
+  <% duration = ((endtime - showtime).to_f*1440).to_i %>
+  <% rescount = 0 %>
+
+  <% resjson["value"].each do |res|%>
+    <% if show["txobjid"] == res["txobjid"] %>
+      <% rescount = res['Count']%>
+    <%end%>
+  <%end%>
+
+  <p>
+    <strong><%= show['ProgramEventsName']%></strong>
+    <br/><%= showtime.strftime("%A, %B %-d")%> at <%= showtime.strftime("%-I:%M")%>
+    <br/>Booked by <%= show['ProgramEventsAddedbyusername']%>
+    <br/><%= rescount %> guests via Group Sales
+  </p>
+
+  <% if duration != 45 && show['Category'] != "Camp" && show['Category'] != "Facility Rental" && show['Category'] != "Development"%>
+    <div class="alert alert-warning" role="alert">
+      This program is <%=duration%> minutes.
+    </div>
+  <% end %>
+
+  <% if rescount == 0 && show['Category'] != "Development"%>
+    <div class="alert alert-danger" role="alert">
+      No Group Sales reservations exist for this program.
+    </div>
+  <% end %>
+  <hr>
+<%end%>
+
+
+

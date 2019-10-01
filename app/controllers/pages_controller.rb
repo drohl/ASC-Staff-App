@@ -31,4 +31,6 @@ class PagesController < ApplicationController
   end
   def pltmsched
   end
+  def rescheck
+  end
 end

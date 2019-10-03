@@ -17,7 +17,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<% if user_signed_in? %>
 					<li>
-						<%= link_to new_stay_path do %>
+						<% link_to new_stay_path do %>
 							Staying late
 							<% if Stay.count > 0 %>
 								<span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
@@ -25,7 +25,7 @@
 						<% end %>
 					</li>
 					<li class="dropdown">
-          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Planetarium <span class="caret"></span></a>
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">Planetarium <span class="caret"></span></a>
 	          <ul class="dropdown-menu">
 							<li class="dropdown-header">Today</li>
 							<li><%= link_to "Ticket sales", ticketsales_path %></li>
@@ -39,12 +39,12 @@
 	          </ul>
         	</li>
 					<li class="dropdown">
-          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Education <span class="caret"></span></a>
+          	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Learning &amp; Outreach <span class="caret"></span></a>
 	          <ul class="dropdown-menu">
 							<li class="dropdown-header">Today</li>
 							<li><%= link_to "Itineraries", itinerary_path %></li>
 	            <li><%= link_to "Group counts", groups_path %></li>
-	            <li><%= link_to "Programs by room", groupprograms_path %></li>
+	            <li><%= link_to "Groups by room", groupprograms_path %></li>
 	            <li role="separator" class="divider"></li>
 							<li class="dropdown-header">Thru Next Week</li>
 							<li><%= link_to "Itineraries", itinerarylong_path %></li>

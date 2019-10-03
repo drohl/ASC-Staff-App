@@ -36,6 +36,17 @@
     <%end%>
   <%end%>
 
+  <% othergrouplink = "https://altrurig04bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=f3610c61-a365-4998-a95a-fd6f737bc916"%>
+  <% othergroupodata = open(othergrouplink, http_basic_authentication: [user, pass]).read %>
+  <% othergroupjson = JSON.parse othergroupodata %>
+  <% othergroup = 0 %>
+  <% othergroupjson["value"].each do |group|%>
+    <% date = DateTime.strptime(group['Arrivaldate'],"%Y-%m-%dT%H:%M:%S")%>
+    <% if date.strftime("%A %-m/%-d") == DateTime.now.in_time_zone("Central Time (US & Canada)").strftime("%A %-m/%-d")%>
+      <% othergroup = group['SUMItinerariesAttendeesQuantity']%>
+    <%end%>
+  <%end%>
+
   <% pltmlink = "https://altrurig04bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/ODataQuery.ashx?databasename=14AFCB42-1379-457A-AD0C-0CD6166E17F3&AdHocQueryID=6453bc96-899d-4897-8eb9-cad8d3ce3641"%>
   <% pltmodata = open(pltmlink, http_basic_authentication: [user, pass]).read %>
   <% pltmjson = JSON.parse pltmodata %>
@@ -53,30 +64,65 @@
   <% sciencelive = open('https://spreadsheets.google.com/feeds/list/1sHG-MldUpOushzh5VpYiycrCl1UhPjfLlzrV-IfJYj0/od6/public/values').read%>
   <% sciencelive.gsub! '<gsx:', '<'%>
   <% sciencelive = Nokogiri::XML(sciencelive)%>
-<h1>ASC Staff Resources</h1> 
+<h1>Today’s Guests</h1> 
   <div class="row">
-    <div class="col-md-3 col-sm-6 col-xs-12">
+    
+    <div class="col-xs-12">
+      <div class="jumbotron">
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-xs-12" style="text-align: center">
+            <h1><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong><%=ga2%></strong></h1>
+            <p>general admission</p>
+          </div>
+          <%= link_to itinerary_path do %>
+            <div class="col-md-3 col-sm-6 col-xs-12" style="text-align: center">
+              <h1><span class="glyphicon glyphicon-home" aria-hidden="true"></span> <strong><%=group2%></strong></h1>
+              <p>group</p>
+            </div>
+          <% end %>
+          <%= link_to ticketsales_path do %>
+            <div class="col-md-3 col-sm-6 col-xs-12" style="text-align: center">
+              <h1><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> <strong><%=pltm2%></strong></h1>
+              <p>planetarium</p>
+            </div>
+          <% end %>
+          <%= link_to itinerary_path do %>
+            <div class="col-md-3 col-sm-6 col-xs-12" style="text-align: center">
+              <h1><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> <strong><%=othergroup%></strong></h1>
+              <p>rental/birthday/sleepover</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <!--div class="col-md-3 col-sm-6 col-xs-12">
       <h2>Today</h2>
-      <p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong><%=ga2%></strong> guest admissions</p>
-      <p><span class="glyphicon glyphicon-home" aria-hidden="true"></span> <strong><%=group2%></strong> <%= link_to "group admissions", itinerary_path %></p>
-      <p><span class="glyphicon glyphicon-film" aria-hidden="true"></span> <strong><%=pltm2%></strong> <%= link_to "planetarium tickets sold", ticketsales_path %></p>
+      <h1><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <strong><%=ga2%></strong></h1>
+      <p>guest admissions</p>
+      <h1><span class="glyphicon glyphicon-home" aria-hidden="true"></span> <strong><%=group2%></strong></h1>
+      <p><%= link_to "reserved in groups", itinerary_path %></p>
+      <h1><span class="glyphicon glyphicon-globe" aria-hidden="true"></span> <strong><%=pltm2%></strong></h1>
+      <p><%= link_to "planetarium tickets sold", ticketsales_path %></p>
+      <h1><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> <strong><%=othergroup%></strong></h1>
+      <p><%= link_to "rental/party/sleepover guests", itinerary_path %></p>
 
 
 
 
       <% if Stay.count > 0 %>
-        <%= link_to new_stay_path, class: "btn btn-primary" do %>
+        <% link_to new_stay_path, class: "btn btn-primary" do %>
           Staying late
           <span class="badge"><span class="glyphicon glyphicon-user"></span> <%= Stay.count %></span>
         <% end %>
       <% else %>
-        <%= link_to new_stay_path, class: "btn btn-default" do %>
+        <% link_to new_stay_path, class: "btn btn-default" do %>
           Staying late
         <% end %>
       <% end %>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <h2>Weather</h2>
+    </div-->
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <h1>Weather</h1>
       <script type='text/javascript' src='https://darksky.net/widget/default-small/36.1464,-86.7756/us12/en.js?width=159&height=&title=Nashville, TN&textColor=333333&bgColor=transparent&transparency=true&skyColor=81be41&fontFamily=Arial&customFont=https://fonts.googleapis.com/css\family\\Muli&units=us'></script>
       <h3 style="margin-top:0;"><%= weatherjson["minutely"]["summary"]%></h3>
       <!--<p>Feels like: <strong><%= weatherjson["currently"]["apparentTemperature"].round%>&deg;F</strong><br/>
@@ -103,9 +149,9 @@
         <%= link_to "Edit", "https://docs.google.com/spreadsheets/d/1sHG-MldUpOushzh5VpYiycrCl1UhPjfLlzrV-IfJYj0/edit#gid=0", class: "btn btn-default", :target => "_blank"  %>
       </div-->
     </div>
-    <div class="clearfix visible-sm-block"></div>
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <h2>Links</h2>
+    <!--div class="clearfix visible-sm-block"></div-->
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <h1>Links</h1>
       <div class="list-group" role="group" aria-label="...">
         <%= link_to "Altru", "https://altrurig04bo3.blackbaudhosting.com/2532Altru_e4a2fe99-d6e1-46e7-a6c0-f6b932aa606d/webui/webshellpage.aspx?databaseName=14AFCB42-1379-457A-AD0C-0CD6166E17F3", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Basecamp", "https://launchpad.37signals.com", class: "list-group-item", :target => "_blank"  %>
@@ -116,8 +162,8 @@
         
       </div>
     </div>
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <h2>Staff Tools</h2>
+    <div class="col-md-4 col-xs-12">
+      <h1>Staff Tools</h1>
       <div class="list-group" role="group" aria-label="...">
         <%= link_to "Timecard (Employee)", "https://adventuresci.attendanceondemand.com/ess/", class: "list-group-item", :target => "_blank"  %>
         <%= link_to "Timecard (Supervisor)", "https://adventuresci.attendanceondemand.com/operator/", class: "list-group-item", :target => "_blank"  %>

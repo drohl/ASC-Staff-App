@@ -1,5 +1,5 @@
 <% Time.zone = 'Central Time (US & Canada)' %>
-<% @title="Group Itineraries: " + Time.zone.now.to_date.to_s(:long)%>
+<% @title="Today’s Itineraries: " + Time.zone.now.strftime("%B %e, %Y")%>
 
 <% user = ENV['altru_user']%>
 <% pass = ENV['altru_pass']%>
@@ -30,12 +30,13 @@
 
   <%# Write a school header, once per school %>
   <% if json['Name'] != runningschool%>
-    <div class="row">
+    <div class="row" style="margin-top:50px;">
       <div class="col-xs-12">
         <div>
-          <h3><%= arrivaltime%>&mdash;<%= json['Name'].split(" - ").first%><br/>
-            <small>Lead is <%=leader%><br/>
-              <%=json['ImportantNotes'].gsub(/\n/,'<br/>').html_safe%></small></h3>
+          <h2><%= json['Name'].split(" - ").first%></h2>
+          <h3>
+            <%= arrivaltime%> arrival&mdash;Lead is <%=leader%><br/>
+              <small><%=json['ImportantNotes'].gsub(/\n/,'<br/>').html_safe%></small></h3>
         </div>
         <!--div class="visible-xs">
           <h3><span class="glyphicon glyphicon-home"></span> <%= json['Name'].split(" - ").first%><br/><small><%= arrivaltime%> arrival</small></h3>
@@ -48,7 +49,7 @@
   <%# Check if school has programs beyond General Admission, create itineraries %>
   <div class="row">
     <% if json['ItinerariesName'] != runningitinerary %>
-      <div class="col-xs-12">
+      <div class="col-xs-12 col-sm-11 col-sm-offset-1">
         <strong><%= json['ItinerariesName'] %></strong>
         (<%= json['SUMItinerariesAttendeesQuantity']%> guests)
         <% runningitinerary = json['ItinerariesName'] %>
@@ -56,13 +57,13 @@
     <%end%>
     <% if json['ItinerariesItemsProgramEventsName'].to_s != ""%>
       <% programtime = DateTime.strptime(json['ItinerariesItemsProgramEventsStarttime'].to_s,"%H%M")%>
-      <div class="col-sm-1 col-sm-offset-1 col-xs-2">
+      <div class="col-sm-1 col-sm-offset-2 col-xs-2">
         <%= programtime.strftime("%-I:%M")%>
       </div>
       <div class="col-sm-4 col-xs-10">
         <%= json['ItinerariesItemsProgramEventsName'] %>
       </div>
-      <div class="col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-2">
+      <div class="col-sm-5 col-sm-offset-0 col-xs-10 col-xs-offset-2">
         <em><%= json['ItinerariesItemsProgramEventsLocationsName'] %></em>
       </div>
     <%else%>

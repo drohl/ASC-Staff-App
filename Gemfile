@@ -18,7 +18,7 @@ gem 'bootstrap-sass'
 gem 'devise'
 gem 'paranoia', '~> 2.2'
 gem 'masonry-rails', '~>0.2.0'
-gem 'nokogiri', '~> 1.7'
+gem 'nokogiri', '~> 1.10'
 
 group :development, :test do
   gem 'byebug', platform: :mri
